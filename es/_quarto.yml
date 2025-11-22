@@ -1,0 +1,64 @@
+project:
+  type: book
+  output-dir: ../_book/es
+
+book:
+  title: "Colección Completa de Análisis de Datos"
+  author: "Norah Jones"
+  date: "2025-11-21"
+  language: es
+  chapters:
+    - index.qmd
+    - intro.qmd
+    - part: "Métodos de Optimización"
+      chapters:
+        - chapters/optimization/01_intro.qmd
+    - part: "Resumen y Referencias"
+      chapters:
+        - summary.qmd
+        - references.qmd
+  navbar:
+    right:
+      - text: "English"
+        href: ../en/index.html
+        icon: translate
+
+bibliography: references.bib
+
+format:
+  html:
+    theme:
+      - cosmo
+      - brand
+    toc: true
+    toc-depth: 3
+    code-fold: true
+    code-summary: "Mostrar código"
+    lang: es
+  pdf:
+    documentclass: scrreprt
+    toc: true
+    lof: true
+    lot: true
+    pdf-engine: lualatex
+    include-in-header:
+      text: |
+        \usepackage{fontspec}
+        \usepackage{unicode-math}
+        \setmainfont{Latin Modern Roman}
+        \setmathfont{Latin Modern Math}
+    keep-tex: true
+    lang: es
+
+language:
+  title-block-author-single: "Autor"
+  title-block-published: "Publicado"
+  title-block-modified: "Modificado"
+  search-text-placeholder: "Buscar"
+  search-matching-documents-text: "documentos coincidentes"
+  search-no-results-text: "Sin resultados"
+  toc-title-document: "Tabla de contenidos"
+  section-title-abstract: "Resumen"
+  section-title-appendices: "Apéndices"
+  section-title-footnotes: "Notas al pie"
+  section-title-references: "Referencias"

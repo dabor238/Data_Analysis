@@ -1,0 +1,688 @@
+---
+title: "01 Intro"
+author: "Extracted from PDF"
+date: "2025-11-20"
+category: "optimization"
+format:
+  html:
+    toc: true
+    toc-depth: 3
+    code-fold: true
+  pdf:
+    toc: true
+bibliography: references.bib
+---
+
+1
+Introduction
+This book is about the fundamentals of algorithms for solving continuous
+optimization problems, which involve minimizing functions of multiple real-
+valued variables, possibly subject to some restrictions or constraints on the
+values that those variables may take. We focus particularly (though not
+exclusively) on convex problems, and our choice of topics is motivated by
+relevance to data science. That is, the formulations and algorithms that we
+discuss are useful in solving problems from machine learning, statistics, and
+data analysis.
+To set the stage for subsequent chapters, the rest of this chapter outlines
+several paradigms from data science and shows how they can be formulated
+as continuous optimization problems. We must pay attention to particular
+properties of these formulations – their smoothness properties and structure –
+when we choose algorithms to solve them.
+1.1 Data Analysis and Optimization
+The typical optimization problem in data analysis is to ﬁnd a model that agrees
+with some collected data set but also adheres to some structural constraints that
+reﬂect our beliefs about what a good model should be. The data set in a typical
+analysis problem consists of m objects:
+D := {(aj,yj), j = 1,2, . . . ,m},
+(1.1)
+where aj is a vector (or matrix) of features and yj is an observation or label.
+(We can assume that the data has been cleaned so that all pairs (aj,yj), j =
+1,2, . . . ,m have the same size and shape.) The data analysis task then consists
+of discovering a function φ such that φ(aj) ≈yj for most j = 1,2, . . . ,m. The
+process of discovering the mapping φ is often called “learning” or “training.”
+1
+https://doi.org/10.1017/9781009004282.002 Published online by Cambridge University Press
+2
+1 Introduction
+The function φ is often deﬁned in terms of a vector or matrix of parameters,
+which we denote in what follows by x or X (and occasionally by other
+notation). With these parametrizations, the problem of identifying φ becomes
+a traditional data-ﬁtting problem: Find the parameters x deﬁning φ such that
+φ(aj) ≈yj, j = 1,2, . . . ,m in some optimal sense. Once we come up with
+a deﬁnition of the term “optimal” (and possibly also with restrictions on the
+values that we allow to parameters to take), we have an optimization problem.
+Frequently, these optimization formulations have objective functions of the
+ﬁnite-sum type
+LD(x) := 1
+m
+m
+
+j=1
+ℓ(aj,yj;x).
+(1.2)
+The function ℓ(a,y;x) here represents a “loss” incurred for not properly
+aligning our prediction φ(a) with y. Thus, the objective LD(x) measures the
+average loss accrued over the entire data set when the parameter vector is
+equal to x.
+Once an appropriate value of x (and thus φ) has been learned from the data,
+we can use it to make predictions about other items of data not in the set D
+(1.1). Given an unseen item of data ˆa of the same type as aj, j = 1,2, . . . ,m,
+we predict the label ˆy associated with ˆa to be φ(ˆa). The mapping φ may also
+expose other structures and properties in the data set. For example, it may
+reveal that only a small fraction of the features in aj are needed to reliably
+predict the label yj. (This is known as feature selection.) When the parameter
+x is a matrix, it could reveal a low-dimensional subspace that contains most of
+the vectors aj, or it could reveal a matrix with particular structure (low-rank,
+sparse) such that observations of X prompted by the feature vectors aj yield
+results close to yj.
+The form of the labels yj differs according to the nature of the data analysis
+problem.
+• If each yj is a real number, we typically have a regression problem.
+• When each yj is a label, that is, an integer drawn from the set {1,2, . . . ,M}
+indicating that aj belongs to one of M classes, this is a classiﬁcation
+problem. When M = 2, we have a binary classiﬁcation problem, whereas
+M > 2 is multiclass classiﬁcation. (In data analysis problems arising in
+speech and image recognition, M can be very large, of the order of
+thousands or more.)
+• The labels yj may not even exist; the data set may contain only the feature
+vectors aj, j = 1,2, . . . ,m. There are still interesting data analysis
+problems associated with these cases. For example, we may wish to group
+https://doi.org/10.1017/9781009004282.002 Published online by Cambridge University Press
+1.1 Data Analysis and Optimization
+3
+the aj into clusters (where the vectors within each cluster are deemed to be
+functionally similar) or identify a low-dimensional subspace (or a
+collection of low-dimensional subspaces) that approximately contains the
+aj. In such problems, we are essentially learning the labels yj alongside the
+function φ. For example, in a clustering problem, yj could represent the
+cluster to which aj is assigned.
+Even after cleaning and preparation, the preceding setup may contain many
+complications that need to be dealt with in formulating the problem in rigorous
+mathematical terms. The quantities (aj,yj) may contain noise or may be
+otherwise corrupted, and we would like the mapping φ to be robust to such
+errors. There may be missing data: Parts of the vectors aj may be missing,
+or we may not know all the labels yj. The data may be arriving in streaming
+fashion rather than being available all at once. In this case, we would learn φ
+in an online fashion.
+One consideration that arises frequently is that we wish to avoid overﬁtting
+the model to the data set D in (1.1). The particular data set D available to us
+can often be thought of as a ﬁnite sample drawn from some underlying larger
+(perhaps inﬁnite) collection of possible data points, and we wish the function φ
+to perform well on the unobserved data points as well as the observed subset D.
+In other words, we want φ to be not too sensitive to the particular sample D that
+is used to deﬁne empirical objective functions such as (1.2). One way to avoid
+this issue is to modify the objective function by adding constraints or penalty
+terms, in a way that limits the “complexity” of the function φ. This process is
+typically called regularization. An optimization formulation that balances ﬁt
+to the training data D, model complexity, and model structure is
+min
+x∈ LD(x) + λ pen(x),
+(1.3)
+where  is a set of allowable values for x, pen(·) is a regularization function or
+regularizer, and λ ≥0 is a regularization parameter. The regularizer usually
+takes lower values for parameters x that yield functions φ with lower complex-
+ity. (For example, φ may depend on fewer of the features in the data vectors
+aj or may be less oscillatory.) The parameter λ can be “tuned” to provide an
+appropriate balance between ﬁtting the data and lowering the complexity of φ:
+Smaller values of λ tend to produce solutions that ﬁt the training data D more
+accurately, while large values of λ lead to less complex models.1
+1 Interestingly, the concept of overﬁtting has been reexamined in recent years, particularly in the
+context of deep learning, where models that perfectly ﬁt the training data are sometimes
+observed to also do a good job of classifying previously unseen data. This phenomenon is a
+topic of intense current research in the machine learning community.
+https://doi.org/10.1017/9781009004282.002 Published online by Cambridge University Press
+4
+1 Introduction
+The constraint set  in (1.3) may be chosen to exclude values of x that are
+not relevant or useful in the context of the data analysis problem. For example,
+in some applications, we may not wish to consider values of x in which one
+or more components are negative, so we could set  to be the set of vectors
+whose components are all greater than or equal to zero.
+We now examine some particular problems in data science that give rise to
+formulations that are special cases of our master problem (1.3). We will see that
+a large variety of problems can be formulated using this general framework, but
+we will also see that within this framework, there is a wide range of structures
+that must be taken into account in choosing algorithms to solve these problems
+efﬁciently.
+1.2 Least Squares
+Probably the oldest and best-known data analysis problem is linear least
+squares. Here, the data points (aj,yj) lie in Rn × R, and we solve
+min
+x
+1
+2m
+m
+
+j=1
+
+aT
+j x −yj
+2
+= 1
+2m∥Ax −y∥2
+2,
+(1.4)
+where A the matrix whose rows are aT
+j , j
+=
+1,2, . . . ,m and y
+=
+(y1,y2, . . . ,ym)T . In the preceding terminology, the function φ is deﬁned
+by φ(a) := aT x. (We can introduce a nonzero intercept by adding an extra
+parameter β ∈R and deﬁning φ(a) := aT x + β.) This formulation can
+be motivated statistically, as a maximum-likelihood estimate of x when the
+observations yj are exact but for independent identically distributed (i.i.d.)
+Gaussian noise. We can add a variety of penalty functions to this basic least
+squares problem to impose desirable structure on x and, hence, on φ. For
+example, ridge regression adds a squared ℓ2-norm penalty, resulting in
+min
+x
+1
+2m∥Ax −y∥2
+2 + λ∥x∥2
+2,
+for some parameter λ > 0.
+The solution x of this regularized formulation has less sensitivity to perturba-
+tions in the data (aj,yj). The LASSO formulation
+min
+x
+1
+2m∥Ax −y∥2
+2 + λ∥x∥1
+(1.5)
+tends to yield solutions x that are sparse – that is, containing relatively
+few nonzero components (Tibshirani, 1996).
+This formulation performs
+feature selection: The locations of the nonzero components in x reveal those
+https://doi.org/10.1017/9781009004282.002 Published online by Cambridge University Press
+1.3 Matrix Factorization Problems
+5
+components of aj that are instrumental in determining the observation yj.
+Besides its statistical appeal – predictors that depend on few features are
+potentially simpler and more comprehensible than those depending on many
+features – feature selection has practical appeal in making predictions about
+future data. Rather than gathering all components of a new data vector ˆa, we
+need to ﬁnd only the “selected” features because only these are needed to make
+a prediction.
+The LASSO formulation (1.5) is an important prototype for many problems
+in data analysis in that it involves a regularization term λ∥x∥1 that is non-
+smooth and convex but has relatively simple structure that can potentially be
+exploited by algorithms.
+1.3 Matrix Factorization Problems
+There are a variety of data analysis problems that require estimating a low-rank
+matrix from some sparse collection of data. Such problems can be formulated
+as natural extension of least squares to problems in which the data aj are
+naturally represented as matrices rather than vectors.
+Changing notation slightly, we suppose that each Aj is an n×p matrix, and
+we seek another n × p matrix X that solves
+min
+X
+1
+2m
+m
+
+j=1
+(⟨Aj,X⟩−yj)2,
+(1.6)
+where ⟨A,B⟩:= trace(AT B). Here we can think of the Aj as “probing” the
+unknown matrix X. Commonly considered types of observations are random
+linear combinations (where the elements of Aj are selected i.i.d. from some
+distribution) or single-element observations (in which each Aj has 1 in a
+single location and zeros elsewhere). A regularized version of (1.6), leading
+to solutions X that are low rank, is
+min
+X
+1
+2m
+m
+
+j=1
+(⟨Aj,X⟩−yj)2 + λ∥X∥∗,
+(1.7)
+where ∥X∥∗is the nuclear norm, which is the sum of singular values of X
+(Recht et al., 2010). The nuclear norm plays a role analogous to the ℓ1 norm in
+(1.5), where as the ℓ1 norm favors sparse vectors, the nuclear norm favors low-
+rank matrices. Although the nuclear norm is a somewhat complex nonsmooth
+function, it is at least convex so that the formulation (1.7) is also convex. This
+formulation can be shown to yield a statistically valid solution when the true
+https://doi.org/10.1017/9781009004282.002 Published online by Cambridge University Press
+6
+1 Introduction
+X is low rank and the observation matrices Aj satisfy a “restricted isometry
+property,” commonly satisﬁed by random matrices but not by matrices with
+just one nonzero element. The formulation is also valid in a different context,
+in which the true X is incoherent (roughly speaking, it does not have a few
+elements that are much larger than the others), and the observations Aj are of
+single elements (Cand`es and Recht, 2009).
+In another form of regularization, the matrix X is represented explicitly as
+a product of two “thin” matrices L and R, where L ∈Rn×r and R ∈Rp×r,
+with r ≪min(n,p). We set X = LRT in (1.6) and solve
+min
+L,R
+1
+2m
+m
+
+j=1
+(⟨Aj,LRT ⟩−yj)2.
+(1.8)
+In this formulation, the rank r is “hard-wired” into the deﬁnition of X, so
+there is no need to include a regularizing term. This formulation is also
+typically much more compact than (1.7); the total number of elements in
+(L,R) is (n + p)r, which is much less than np. However, this function is
+nonconvex when considered as a function of (L,R) jointly. An active line of
+current research, pioneered by Burer and Monteiro (2003) and also drawing on
+statistical sources, shows that the nonconvexity is benign in many situations
+and that, under certain assumptions on the data (Aj,yj), j = 1,2, . . . ,m and
+careful choice of algorithmic strategy, good solutions can be obtained from the
+formulation (1.8). A clue to this good behavior is that although this formulation
+is nonconvex, it is in some sense an approximation to a tractable problem: If we
+have a complete observation of X, then a rank-r approximation can be found
+by performing a singular value decomposition of X and deﬁning L and R in
+terms of the r leading left and right singular vectors.
+Some applications in computer vision, chemometrics, and document clus-
+tering require us to ﬁnd factors L and R like those in (1.8) in which all elements
+are nonnegative. If the full matrix Y ∈Rn×p is observed, this problem has the
+form
+min
+L,R ∥LRT −Y∥2
+F,
+subject to L ≥0, R ≥0
+and is called nonnegative matrix factorization.
+1.4 Support Vector Machines
+Classiﬁcation via support vector machines (SVM) is a classical optimization
+problem in machine learning, tracing its origins to the 1960s. Given the input
+https://doi.org/10.1017/9781009004282.002 Published online by Cambridge University Press
+1.4 Support Vector Machines
+7
+data (aj,yj) with aj ∈Rn and yj ∈{−1,1}, SVM seeks a vector x ∈Rn and
+a scalar β ∈R such that
+aT
+j x −β ≥1
+when yj = +1,
+(1.9a)
+aT
+j x −β ≤−1
+when yj = −1.
+(1.9b)
+Any pair (x,β) that satisﬁes these conditions deﬁnes a separating hyperplane
+in Rn, that separates the “positive” cases {aj | yj = +1} from the “negative”
+cases {aj | yj
+=
+−1}. Among all separating hyperplanes, the one that
+minimizes ∥x∥2 is the one that maximizes the margin between the two classes –
+that is, the hyperplane whose distance to the nearest point aj of either class is
+greatest.
+We can formulate the problem of ﬁnding a separating hyperplane as an
+optimization problem by deﬁning an objective with the summation form (1.2):
+H(x,β) = 1
+m
+m
+
+j=1
+max(1 −yj(aT
+j x −β),0).
+(1.10)
+Note that the jth term in this summation is zero if the conditions (1.9) are
+satisﬁed, and it is positive otherwise. Even if no pair (x,β) exists for which
+H(x,β) = 0, a value (x,β) that minimizes (1.2) will be the one that comes
+as close as possible to satisfying (1.9) in some sense. A term λ∥x∥2
+2 (for some
+parameter λ > 0) is often added to (1.10), yielding the following regularized
+version:
+H(x,β) = 1
+m
+m
+
+j=1
+max(1 −yj(aT
+j x −β),0) + 1
+2λ∥x∥2
+2.
+(1.11)
+Note that, in contrast to the examples presented so far, the SVM problem has
+a nonsmooth loss function and a smooth regularizer.
+If λ is sufﬁciently small, and if separating hyperplanes exist, the pair
+(x,β) that minimizes (1.11) is the maximum-margin separating hyperplane.
+The maximum-margin property is consistent with the goals of generalizability
+and robustness.
+For example, if the observed data (aj,yj) is drawn from
+an underlying “cloud” of positive and negative cases, the maximum-margin
+solution usually does a reasonable job of separating other empirical data
+samples drawn from the same clouds, whereas a hyperplane that passes close
+to several of the observed data points may not do as well (see Figure 1.1).
+Often, it is not possible to ﬁnd a hyperplane that separates the positive
+and negative cases well enough to be useful as a classiﬁer. One solution is
+to transform all of the raw data vectors aj by some nonlinear mapping ψ and
+https://doi.org/10.1017/9781009004282.002 Published online by Cambridge University Press
+8
+1 Introduction
+.
+Figure 1.1 Linear support vector machine classiﬁcation, with the one class
+represented by circles and the other by squares. One possible choice of separating
+hyperplane is shown at left. If the training data is an empirical sample drawn from
+a cloud of underlying data points, this plane does not do well in separating the two
+clouds (middle). The maximum-margin separating hyperplane does better (right).
+then perform the support vector machine classiﬁcation on the vectors ψ(aj),
+j = 1,2, . . . ,m. The conditions (1.9) would thus be replaced by
+ψ(aj)T x −β ≥1
+when yj = +1;
+(1.12a)
+ψ(aj)T x −β ≤−1
+when yj = −1,
+(1.12b)
+leading to the following analog of (1.11):
+H(x,β) = 1
+m
+m
+
+j=1
+max(1 −yj(ψ(aj)T x −β),0) + 1
+2λ∥x∥2
+2.
+(1.13)
+When transformed back to Rm, the surface {a | ψ(a)T x −β = 0} is nonlinear
+and possibly disconnected, and is often a much more powerful classiﬁer than
+the hyperplanes resulting from (1.11).
+We note that SVM can also be expressed naturally as a minimization
+problem over a convex set. By introducing artiﬁcial variables, the problem
+(1.13) (and (1.11)) can be formulated as a convex quadratic program – that is,
+a problem with a convex quadratic objective and linear constraints. By taking
+the dual of this problem, we obtain another convex quadratic program, in m
+variables:
+min
+α∈Rm
+1
+2αT Qα −1T α
+subject to 0 ≤α ≤1
+λ1, yT α = 0,
+(1.14)
+where
+Qkl = ykylψ(ak)T ψ(al),
+y = (y1,y2, . . . ,ym)T,
+1 = (1,1, . . . ,1)T .
+Interestingly, problem (1.14) can be formulated and solved without explicit
+knowledge or deﬁnition of the mapping ψ. We need only a technique to deﬁne
+the elements of Q. This can be done with the use of a kernel function K : Rn ×
+Rn →R, where K(ak,al) replaces ψ(ak)T ψ(al) (Boser et al., 1992; Cortes
+https://doi.org/10.1017/9781009004282.002 Published online by Cambridge University Press
+1.5 Logistic Regression
+9
+and Vapnik, 1995). This is the so-called kernel trick. (The kernel function K
+can also be used to construct a classiﬁcation function φ from the solution of
+(1.14).) A particularly popular choice of kernel is the Gaussian kernel:
+K(ak,al) := exp
+
+−1
+2σ ∥ak −al∥2
+
+,
+where σ is a positive parameter.
+1.5 Logistic Regression
+Logistic regression can be viewed as a softened form of binary support vector
+machine classiﬁcation in which, rather than the classiﬁcation function φ giving
+a unqualiﬁed prediction of the class in which a new data vector a lies, it returns
+an estimate of the odds of a belonging to one class or the other. We seek an
+“odds function” p parametrized by a vector x ∈Rn,
+p(a;x) := (1 + exp(aT x))−1,
+(1.15)
+and aim to choose the parameter x in so that
+p(aj;x) ≈1
+when yj = +1;
+(1.16a)
+p(aj;x) ≈0
+when yj = −1.
+(1.16b)
+(Note the similarity to (1.9).) The optimal value of x can be found by
+minimizing a negative-log-likelihood function:
+L(x) := −1
+m
+⎡
+⎣
+j:yj =−1
+log(1 −p(aj;x)) +
+
+j:yj =1
+log p(aj;x)
+⎤
+⎦.
+(1.17)
+Note that the deﬁnition (1.15) ensures that p(a;x) ∈(0,1) for all a and x;
+thus, log(1 −p(aj;x)) < 0 and log p(aj;x) < 0 for all j and all x. When the
+conditions (1.16) are satisﬁed, these log terms will be only slightly negative,
+so values of x that satisfy (1.17) will be near optimal.
+We can perform feature selection using the model (1.17) by introducing a
+regularizer λ∥x∥1 (as in the LASSO technique for least squares (1.5)),
+min
+x
+−1
+m
+⎡
+⎣
+j:yj =−1
+log(1 −p(aj;x)) +
+
+j:yj =1
+log p(aj;x)
+⎤
+⎦+ λ∥x∥1,
+(1.18)
+where λ > 0 is a regularization parameter. As we see later, this term has
+the effect of producing a solution in which few components of x are nonzero,
+https://doi.org/10.1017/9781009004282.002 Published online by Cambridge University Press
+10
+1 Introduction
+making it possible to evaluate p(a;x) by knowing only those components of a
+that correspond to the nonzeros in x.
+An important extension of this technique is to multiclass (or multinomial)
+logistic regression, in which the data vectors aj belong to more than two
+classes. Such applications are common in modern data analysis. For example,
+in a speech recognition system, the M classes could each represent a phoneme
+of speech, one of the potentially thousands of distinct elementary sounds
+that can be uttered by humans in a few tens of milliseconds. A multinomial
+logistic regression problem requires a distinct odds function pk for each class
+k ∈{1,2, . . . ,M}. These functions are parametrized by vectors x[k] ∈Rn,
+k = 1,2, . . . ,M, deﬁned as follows:
+pk(a;X) :=
+exp(aT x[k])
+M
+l=1 exp(aT x[l])
+,
+k = 1,2, . . . ,M,
+(1.19)
+where we deﬁne X := {x[k] | k = 1,2, . . . ,M}. As in the binary case, we
+have pk(a) ∈(0,1) for all a and all k = 1,2, . . . ,M and, in addition, that
+M
+k=1 pk(a) = 1. The functions (1.19) perform a “softmax” on the quantities
+{aT x[l] | l = 1,2, . . . ,M}.
+In the setting of multiclass logistic regression, the labels yj are vectors in
+RM whose elements are deﬁned as follows:
+yjk =
+
+1
+when aj belongs to class k,
+0
+otherwise.
+(1.20)
+Similarly to (1.16), we seek to deﬁne the vectors x[k] so that
+pk(aj;X) ≈1
+when yjk = 1
+(1.21a)
+pk(aj;X) ≈0
+when yjk = 0.
+(1.21b)
+The problem of ﬁnding values of x[k] that satisfy these conditions can again be
+formulated as one of minimizing a negative-log-likelihood:
+L(X) := −1
+m
+m
+
+j=1
+ M
+
+ℓ=1
+yjℓ(xT
+[ℓ]aj) −log
+ M
+
+ℓ=1
+exp(xT
+[ℓ]aj)
+
+.
+(1.22)
+“Group-sparse” regularization terms can be included in this formulation to
+select a set of features in the vectors aj, common to each class, that distinguish
+effectively between the classes.
+https://doi.org/10.1017/9781009004282.002 Published online by Cambridge University Press
+1.6 Deep Learning
+11
+1.6 Deep Learning
+Deep neural networks are often designed to perform the same function as
+multiclass logistic regression – that is, to classify a data vector a into one of M
+possible classes, often for large M. The major innovation is that the mapping
+φ from data vector to prediction is now a nonlinear function, explicitly
+parametrized by a set of structured transformations.
+The neural network shown in Figure 1.2 illustrates the structure of a particu-
+lar neural net. In this ﬁgure, the data vector aj enters at the left of the network,
+and each box (more often referred to as a “layer”) represents a transformation
+that takes an input vector and applies a nonlinear transformation of the data
+to produce an output vector. The output of each operator becomes the input
+for one or more subsequent layers. Each layer has a set of its own parameters,
+and the collection of all of the parameters over all the layers comprises our
+optimization variable. The different shades of boxes here denote the fact that
+the types of transformations might differ between layers, but we can compose
+them in whatever fashion suits our application.
+A typical transformation, which converts the vector al−1
+j
+representing
+output from layer l −1 to the vector al
+j representing output from layer l, is
+al
+j = σ(W lal−1
+j
++ gl),
+(1.23)
+where W l is a matrix of dimension |al
+j|×|al−1
+j
+| and gl is a vector of length |al
+j|.
+The function σ is a componentwise nonlinear transformation, usually called an
+activation function. The most common forms of the activation function σ act
+independently on each component of their argument vector as follows:
+- Sigmoid: t →1/(1 + e−t);
+- Rectiﬁed Linear Unit (ReLU): t →max(t,0).
+Alternative transformations are needed when the input to box l comes from
+two or more preceding boxes (as in the case for some boxes in Figure 1.2).
+The rightmost layer of the neural network (the output layer) typically has M
+outputs, one for each of the possible classes to which the input (aj, say) could
+belong. These are compared to the labels yjk, deﬁned as in (1.20) to indicate
+which of the M classes that aj belongs to. Often, a softmax is applied to the
+Figure 1.2 A deep neural network, showing connections between adjacent layers,
+where each layer is represented by a shaded rectangle.
+https://doi.org/10.1017/9781009004282.002 Published online by Cambridge University Press
+12
+1 Introduction
+outputs in the rightmost layer, and a loss function similar to (1.22) is obtained,
+as we describe now.
+Consider the special (but not uncommon) case in which the neural net
+structure is a linear graph of D levels, in which the output for layer l −1
+becomes the input for layer l (for l = 1,2, . . . ,D) with aj = a0
+j, j =
+1,2, . . . ,m, and the transformation within each box has the form (1.23). A
+softmax is applied to the output of the rightmost layer to obtain a set of odds.
+The parameters in this neural network are the matrix-vector pairs (W l,gl),
+l = 1,2, . . . ,D that transform the input vector aj = a0
+j into the output aD
+j of
+the ﬁnal layer. We aim to choose all these parameters so that the network does
+a good job of classifying the training data correctly. Using the notation w for
+the layer-to-layer transformations, that is,
+w := (W 1,g1,W 2,g2, . . . ,W D,gD),
+we can write the loss function for deep learning as
+L(w) = −1
+m
+m
+
+j=1
+ M
+
+ℓ=1
+yjℓaD
+j,ℓ(w) −log
+ M
+
+ℓ=1
+exp aD
+j,ℓ(w)
+
+,
+(1.24)
+where aD
+j,ℓ(w) ∈R is the output of the ℓth element in layer D corresponding to
+input vector a0
+j. (Here we write aD
+j,ℓ(w) to make explicit the dependence on the
+transformations w as well as on the input vector aj.) We can view multiclass
+logistic regression as a special case of deep learning with D = 1, so that
+a1
+j,ℓ= W 1
+ℓ,·a0
+j, where W 1
+ℓ,· denotes row ℓof the matrix W 1.
+Neural networks in use for particular applications (for example, in image
+recognition and speech recognition, where they have been quite successful)
+include many variants on the basic design. These include restricted connectiv-
+ity between the boxes (which corresponds to enforcing sparsity structure on the
+matrices W l, l = 1,2, . . . ,D) and sharing parameters, which corresponds to
+forcing subsets of the elements of W l to take the same value. Arrangements of
+the boxes may be quite complex, with outputs coming from several layers, con-
+nections across nonadjacent layers, different componentwise transformations
+σ at different layers, and so on. Deep neural networks for practical applications
+are highly engineered objects.
+The loss function (1.24) shares with many other applications the ﬁnite-sum
+form (1.2), but it has several features that set it apart from the other applications
+discussed before. First, and possibly most important, it is nonconvex in the
+parameters w. Second, the total number of parameters in w is usually very
+large. Effective training of deep learning classiﬁers typically requires a great
+deal of data and computation power. Huge clusters of powerful computers –
+https://doi.org/10.1017/9781009004282.002 Published online by Cambridge University Press
+1.7 Emphasis
+13
+often using multicore processors, GPUs, and even specially architected pro-
+cessing units – are devoted to this task.
+1.7 Emphasis
+Many problems can be formulated as in the framework (1.3), and their
+properties may differ signiﬁcantly. They might be convex or nonconvex, and
+smooth or nonsmooth. But there are important features that they all share.
+• They can be formulated as functions of real variables, which we typically
+arrange in a vector of length n.
+• The functions are continuous. When nonsmoothness appears in the
+formulation, it does so in a structured way that can be exploited by the
+algorithm. Smoothness properties allow an algorithm to make good
+inferences about the behavior of the function on the basis of knowledge
+gained at nearby points that have been visited previously.
+• The objective is often made up in part of a summation of many terms,
+where each term depends on a single item of data.
+• The objective is often a sum of two terms: a “loss term” (sometimes arising
+from a maximum likelihood expression for some statistical model) and a
+“regularization term” whose purpose is to impose structure and
+“generalizability” on the recovered model.
+Our treatment emphasizes algorithms for solving these various kinds of
+problems, with analysis of the convergence properties of these algorithms. We
+pay attention to complexity guarantees, which are bounds on the amount of
+computational effort required to obtain solutions of a given accuracy. These
+bounds usually depend on fundamental properties of the objective function
+and the data that deﬁnes it, including the dimensions of the data set and the
+number of variables in the problem. This emphasis contrasts with much of
+the optimization literature, in which global convergence results do not usually
+involve complexity bounds. (A notable exception is the analysis of interior-
+point methods (see Nesterov and Nemirovskii, 1994; Wright, 1997)).
+At the same time, we try as much as possible to emphasize the practical
+concerns associated with solving these problems. There are a variety of trade-
+offs presented by any problem, and the optimizer has to evaluate which tools
+are most appropriate to use. On top of the problem formulation, it is imperative
+to account for the time budget for the task at hand, the type of computer
+on which the problem will be solved, and the guarantees needed for the
+https://doi.org/10.1017/9781009004282.002 Published online by Cambridge University Press

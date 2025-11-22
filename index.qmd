@@ -1,0 +1,37 @@
+---
+title: "Data Analysis Collection"
+---
+
+# Welcome / Bienvenido
+
+Choose your language / Elige tu idioma:
+
+::: {.grid}
+
+::: {.g-col-6}
+## [English Version](en/index.html)
+
+Comprehensive collection of data analysis methods, optimization techniques, and machine learning fundamentals.
+
+**Topics:**
+- Optimization Methods
+- Statistical Analysis
+- Machine Learning
+
+[Go to English Book →](en/index.html){.btn .btn-primary}
+:::
+
+::: {.g-col-6}
+## [Versión en Español](es/index.html)
+
+Colección completa de métodos de análisis de datos, técnicas de optimización y fundamentos de aprendizaje automático.
+
+**Temas:**
+- Métodos de Optimización
+- Análisis Estadístico
+- Aprendizaje Automático
+
+[Ir al Libro en Español →](es/index.html){.btn .btn-primary}
+:::
+
+:::

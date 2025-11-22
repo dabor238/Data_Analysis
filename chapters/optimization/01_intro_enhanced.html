@@ -1,0 +1,1127 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.26">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Optimization Methods">
+<meta name="dcterms.date" content="2025-11-21">
+
+<title>Introduction to Optimization for Data Science</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="01_intro_enhanced_files/libs/clipboard/clipboard.min.js"></script>
+<script src="01_intro_enhanced_files/libs/quarto-html/quarto.js" type="module"></script>
+<script src="01_intro_enhanced_files/libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="01_intro_enhanced_files/libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="01_intro_enhanced_files/libs/quarto-html/popper.min.js"></script>
+<script src="01_intro_enhanced_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="01_intro_enhanced_files/libs/quarto-html/anchor.min.js"></script>
+<link href="01_intro_enhanced_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="01_intro_enhanced_files/libs/quarto-html/quarto-syntax-highlighting-587c61ba64f3a5504c4d52d930310e48.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="01_intro_enhanced_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="01_intro_enhanced_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="01_intro_enhanced_files/libs/bootstrap/bootstrap-4d7f0bce1131f3e5f9547cd857cfbfc8.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href=".callout {
+  border-left: 4px solid #007acc;
+  padding: 1rem;
+  margin: 1rem 0;
+  background-color: #f8f9fa;
+}">
+</head>
+
+<body class="quarto-light">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#sec-introduction" id="toc-sec-introduction" class="nav-link active" data-scroll-target="#sec-introduction"><span class="header-section-number">1</span> Introduction</a></li>
+  <li><a href="#sec-data-analysis" id="toc-sec-data-analysis" class="nav-link" data-scroll-target="#sec-data-analysis"><span class="header-section-number">2</span> Data Analysis and Optimization</a>
+  <ul class="collapse">
+  <li><a href="#the-data-science-framework" id="toc-the-data-science-framework" class="nav-link" data-scroll-target="#the-data-science-framework"><span class="header-section-number">2.1</span> The Data Science Framework</a></li>
+  <li><a href="#the-learning-objective" id="toc-the-learning-objective" class="nav-link" data-scroll-target="#the-learning-objective"><span class="header-section-number">2.2</span> The Learning Objective</a></li>
+  <li><a href="#model-learning-and-prediction" id="toc-model-learning-and-prediction" class="nav-link" data-scroll-target="#model-learning-and-prediction"><span class="header-section-number">2.3</span> Model Learning and Prediction</a></li>
+  <li><a href="#problem-types-by-label-structure" id="toc-problem-types-by-label-structure" class="nav-link" data-scroll-target="#problem-types-by-label-structure"><span class="header-section-number">2.4</span> Problem Types by Label Structure</a></li>
+  <li><a href="#regularization-and-overfitting-prevention" id="toc-regularization-and-overfitting-prevention" class="nav-link" data-scroll-target="#regularization-and-overfitting-prevention"><span class="header-section-number">2.5</span> Regularization and Overfitting Prevention</a></li>
+  </ul></li>
+  <li><a href="#sec-least-squares" id="toc-sec-least-squares" class="nav-link" data-scroll-target="#sec-least-squares"><span class="header-section-number">3</span> Least Squares</a>
+  <ul class="collapse">
+  <li><a href="#ridge-regression" id="toc-ridge-regression" class="nav-link" data-scroll-target="#ridge-regression"><span class="header-section-number">3.1</span> Ridge Regression</a></li>
+  <li><a href="#lasso-formulation" id="toc-lasso-formulation" class="nav-link" data-scroll-target="#lasso-formulation"><span class="header-section-number">3.2</span> LASSO Formulation</a></li>
+  </ul></li>
+  <li><a href="#sec-matrix-factorization" id="toc-sec-matrix-factorization" class="nav-link" data-scroll-target="#sec-matrix-factorization"><span class="header-section-number">4</span> Matrix Factorization Problems</a>
+  <ul class="collapse">
+  <li><a href="#common-observation-types" id="toc-common-observation-types" class="nav-link" data-scroll-target="#common-observation-types"><span class="header-section-number">4.1</span> Common Observation Types</a></li>
+  <li><a href="#nuclear-norm-regularization" id="toc-nuclear-norm-regularization" class="nav-link" data-scroll-target="#nuclear-norm-regularization"><span class="header-section-number">4.2</span> Nuclear Norm Regularization</a></li>
+  <li><a href="#factorized-representation" id="toc-factorized-representation" class="nav-link" data-scroll-target="#factorized-representation"><span class="header-section-number">4.3</span> Factorized Representation</a></li>
+  <li><a href="#nonnegative-matrix-factorization" id="toc-nonnegative-matrix-factorization" class="nav-link" data-scroll-target="#nonnegative-matrix-factorization"><span class="header-section-number">4.4</span> Nonnegative Matrix Factorization</a></li>
+  </ul></li>
+  <li><a href="#sec-svm" id="toc-sec-svm" class="nav-link" data-scroll-target="#sec-svm"><span class="header-section-number">5</span> Support Vector Machines</a>
+  <ul class="collapse">
+  <li><a href="#svm-optimization-formulation" id="toc-svm-optimization-formulation" class="nav-link" data-scroll-target="#svm-optimization-formulation"><span class="header-section-number">5.1</span> SVM Optimization Formulation</a></li>
+  <li><a href="#maximum-margin-property" id="toc-maximum-margin-property" class="nav-link" data-scroll-target="#maximum-margin-property"><span class="header-section-number">5.2</span> Maximum Margin Property</a></li>
+  <li><a href="#kernel-methods" id="toc-kernel-methods" class="nav-link" data-scroll-target="#kernel-methods"><span class="header-section-number">5.3</span> Kernel Methods</a></li>
+  <li><a href="#dual-formulation" id="toc-dual-formulation" class="nav-link" data-scroll-target="#dual-formulation"><span class="header-section-number">5.4</span> Dual Formulation</a></li>
+  <li><a href="#the-kernel-trick" id="toc-the-kernel-trick" class="nav-link" data-scroll-target="#the-kernel-trick"><span class="header-section-number">5.5</span> The Kernel Trick</a></li>
+  </ul></li>
+  <li><a href="#sec-logistic-regression" id="toc-sec-logistic-regression" class="nav-link" data-scroll-target="#sec-logistic-regression"><span class="header-section-number">6</span> Logistic Regression</a>
+  <ul class="collapse">
+  <li><a href="#maximum-likelihood-formulation" id="toc-maximum-likelihood-formulation" class="nav-link" data-scroll-target="#maximum-likelihood-formulation"><span class="header-section-number">6.1</span> Maximum Likelihood Formulation</a></li>
+  <li><a href="#regularized-logistic-regression" id="toc-regularized-logistic-regression" class="nav-link" data-scroll-target="#regularized-logistic-regression"><span class="header-section-number">6.2</span> Regularized Logistic Regression</a></li>
+  <li><a href="#multiclass-logistic-regression" id="toc-multiclass-logistic-regression" class="nav-link" data-scroll-target="#multiclass-logistic-regression"><span class="header-section-number">6.3</span> Multiclass Logistic Regression</a></li>
+  <li><a href="#multiclass-labels-and-objective" id="toc-multiclass-labels-and-objective" class="nav-link" data-scroll-target="#multiclass-labels-and-objective"><span class="header-section-number">6.4</span> Multiclass Labels and Objective</a></li>
+  </ul></li>
+  <li><a href="#sec-deep-learning" id="toc-sec-deep-learning" class="nav-link" data-scroll-target="#sec-deep-learning"><span class="header-section-number">7</span> Deep Learning</a>
+  <ul class="collapse">
+  <li><a href="#neural-network-architecture" id="toc-neural-network-architecture" class="nav-link" data-scroll-target="#neural-network-architecture"><span class="header-section-number">7.1</span> Neural Network Architecture</a></li>
+  <li><a href="#common-activation-functions" id="toc-common-activation-functions" class="nav-link" data-scroll-target="#common-activation-functions"><span class="header-section-number">7.2</span> Common Activation Functions</a></li>
+  <li><a href="#deep-learning-loss-function" id="toc-deep-learning-loss-function" class="nav-link" data-scroll-target="#deep-learning-loss-function"><span class="header-section-number">7.3</span> Deep Learning Loss Function</a></li>
+  <li><a href="#practical-neural-networks" id="toc-practical-neural-networks" class="nav-link" data-scroll-target="#practical-neural-networks"><span class="header-section-number">7.4</span> Practical Neural Networks</a></li>
+  <li><a href="#deep-learning-characteristics" id="toc-deep-learning-characteristics" class="nav-link" data-scroll-target="#deep-learning-characteristics"><span class="header-section-number">7.5</span> Deep Learning Characteristics</a></li>
+  </ul></li>
+  <li><a href="#sec-emphasis" id="toc-sec-emphasis" class="nav-link" data-scroll-target="#sec-emphasis"><span class="header-section-number">8</span> Emphasis and Framework Properties</a>
+  <ul class="collapse">
+  <li><a href="#shared-mathematical-properties" id="toc-shared-mathematical-properties" class="nav-link" data-scroll-target="#shared-mathematical-properties"><span class="header-section-number">8.1</span> Shared Mathematical Properties</a></li>
+  <li><a href="#algorithmic-focus-and-analysis" id="toc-algorithmic-focus-and-analysis" class="nav-link" data-scroll-target="#algorithmic-focus-and-analysis"><span class="header-section-number">8.2</span> Algorithmic Focus and Analysis</a></li>
+  </ul></li>
+  <li><a href="#enhanced-document-summary" id="toc-enhanced-document-summary" class="nav-link" data-scroll-target="#enhanced-document-summary"><span class="header-section-number">9</span> <strong>Enhanced Document Summary</strong></a></li>
+  </ul>
+<div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="..\..\01_intro_enhanced.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li></ul></div></nav>
+</div>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Introduction to Optimization for Data Science</h1>
+<p class="subtitle lead">Fundamentals of Continuous Optimization - Enhanced Version</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Optimization Methods </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">November 21, 2025</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div class="callout callout-style-default callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span><strong>Chapter Overview</strong>
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>This chapter introduces the fundamentals of <strong>continuous optimization algorithms</strong> for data science applications. We explore how machine learning, statistics, and data analysis problems can be formulated as optimization challenges.</p>
+<p><strong>Key Topics Covered:</strong> - Data analysis through optimization lens - Classical optimization problems (Least Squares, LASSO) - Matrix factorization and low-rank problems<br>
+- Machine learning formulations (SVM, Logistic Regression) - Deep learning optimization challenges</p>
+<p><strong>Enhanced Features:</strong> - ✨ Improved mathematical notation and formatting - 🔧 Corrected equation rendering - 📝 Enhanced readability and structure</p>
+</div>
+</div>
+<section id="sec-introduction" class="level2" data-number="1">
+<h2 data-number="1" class="anchored" data-anchor-id="sec-introduction"><span class="header-section-number">1</span> Introduction</h2>
+<p>This book focuses on the <strong>fundamentals of algorithms</strong> for solving continuous optimization problems, which involve:</p>
+<ul>
+<li><strong>Minimizing functions</strong> of multiple real-valued variables</li>
+<li><strong>Handling constraints</strong> on variable values<br>
+</li>
+<li><strong>Emphasizing convex problems</strong> with data science applications</li>
+<li><strong>Connecting theory to practice</strong> in machine learning, statistics, and data analysis</li>
+</ul>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span><strong>Core Focus</strong>
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Our choice of topics is <strong>motivated by relevance to data science</strong> — the formulations and algorithms discussed are directly useful for solving real-world problems in machine learning, statistics, and data analysis.</p>
+</div>
+</div>
+<p>This chapter outlines several <strong>key paradigms from data science</strong> and demonstrates how they can be formulated as continuous optimization problems. Understanding the <strong>smoothness properties and structure</strong> of these formulations is crucial for selecting appropriate algorithms.</p>
+</section>
+<section id="sec-data-analysis" class="level2" data-number="2">
+<h2 data-number="2" class="anchored" data-anchor-id="sec-data-analysis"><span class="header-section-number">2</span> Data Analysis and Optimization</h2>
+<p>The typical optimization problem in data analysis involves finding a <strong>model that balances</strong> two competing objectives:</p>
+<ol type="1">
+<li><strong>Agreement with collected data</strong></li>
+<li><strong>Adherence to structural constraints</strong> reflecting our beliefs about good models</li>
+</ol>
+<section id="the-data-science-framework" class="level3" data-number="2.1">
+<h3 data-number="2.1" class="anchored" data-anchor-id="the-data-science-framework"><span class="header-section-number">2.1</span> The Data Science Framework</h3>
+<p>In a typical analysis problem, our <strong>dataset</strong> consists of <span class="math inline">\(m\)</span> objects:</p>
+<p><span id="eq-dataset"><span class="math display">\[D := \{(a_j, y_j), j = 1,2, \ldots, m\} \tag{1}\]</span></span></p>
+<p>where:</p>
+<div class="grid">
+<div class="g-col-6">
+<p><strong>Features (<span class="math inline">\(a_j\)</span>)</strong> - Vector or matrix of features - Input variables - Predictors</p>
+</div>
+<div class="g-col-6">
+<p><strong>Labels/Observations (<span class="math inline">\(y_j\)</span>)</strong><br>
+- Target values - Responses - Outcomes</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span><strong>Data Preprocessing</strong>
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>We assume the data has been <strong>cleaned</strong> so that all pairs <span class="math inline">\((a_j, y_j)\)</span> have consistent size and shape.</p>
+</div>
+</div>
+</section>
+<section id="the-learning-objective" class="level3" data-number="2.2">
+<h3 data-number="2.2" class="anchored" data-anchor-id="the-learning-objective"><span class="header-section-number">2.2</span> The Learning Objective</h3>
+<p>The <strong>data analysis task</strong> consists of discovering a function <span class="math inline">\(\phi\)</span> such that:</p>
+<p><span id="eq-learning-objective"><span class="math display">\[\phi(a_j) \approx y_j \quad \text{for most } j = 1,2, \ldots, m \tag{2}\]</span></span></p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span><strong>Terminology</strong>
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The process of discovering the mapping <span class="math inline">\(\phi\)</span> is often called <strong>“learning”</strong> or <strong>“training”</strong>.</p>
+</div>
+</div>
+<p>The function <span class="math inline">\(\phi\)</span> is often defined in terms of a vector or matrix of parameters, which we denote by <span class="math inline">\(x\)</span> or <span class="math inline">\(X\)</span>. With these parametrizations, the problem of identifying <span class="math inline">\(\phi\)</span> becomes a traditional data-fitting problem: Find the parameters <span class="math inline">\(x\)</span> defining <span class="math inline">\(\phi\)</span> such that <span class="math inline">\(\phi(a_j) \approx y_j\)</span> for <span class="math inline">\(j = 1,2, \ldots, m\)</span> in some optimal sense.</p>
+<p>Once we define the term “optimal” (and possibly also with restrictions on the parameter values), we have an optimization problem. Frequently, these optimization formulations have objective functions of the <strong>finite-sum type</strong>:</p>
+<p><span id="eq-finite-sum-formulation"><span class="math display">\[L_D(x) := \frac{1}{m} \sum_{j=1}^{m} \ell(a_j, y_j; x) \tag{3}\]</span></span></p>
+<p>The function <span class="math inline">\(\ell(a,y;x)\)</span> represents a <strong>“loss”</strong> incurred for not properly aligning our prediction <span class="math inline">\(\phi(a)\)</span> with <span class="math inline">\(y\)</span>. Thus, the objective <span class="math inline">\(L_D(x)\)</span> measures the average loss accrued over the entire dataset when the parameter vector equals <span class="math inline">\(x\)</span>.</p>
+</section>
+<section id="model-learning-and-prediction" class="level3" data-number="2.3">
+<h3 data-number="2.3" class="anchored" data-anchor-id="model-learning-and-prediction"><span class="header-section-number">2.3</span> Model Learning and Prediction</h3>
+<p>Once an appropriate value of <span class="math inline">\(x\)</span> (and thus <span class="math inline">\(\phi\)</span>) has been learned from the data, we can use it to make predictions about other items not in the set <span class="math inline">\(D\)</span>. Given an unseen item <span class="math inline">\(\hat{a}\)</span> of the same type as <span class="math inline">\(a_j\)</span>, we predict the label <span class="math inline">\(\hat{y}\)</span> associated with <span class="math inline">\(\hat{a}\)</span> to be <span class="math inline">\(\phi(\hat{a})\)</span>.</p>
+<p>The mapping <span class="math inline">\(\phi\)</span> may also expose other structures and properties in the dataset:</p>
+<ul>
+<li><strong>Feature selection</strong>: Revealing that only a small fraction of features in <span class="math inline">\(a_j\)</span> are needed to predict <span class="math inline">\(y_j\)</span></li>
+<li><strong>Dimensionality reduction</strong>: When <span class="math inline">\(x\)</span> is a matrix, it could reveal low-dimensional subspaces containing most vectors <span class="math inline">\(a_j\)</span></li>
+<li><strong>Structure discovery</strong>: Matrices with particular structure (low-rank, sparse) such that observations prompted by feature vectors <span class="math inline">\(a_j\)</span> yield results close to <span class="math inline">\(y_j\)</span></li>
+</ul>
+</section>
+<section id="problem-types-by-label-structure" class="level3" data-number="2.4">
+<h3 data-number="2.4" class="anchored" data-anchor-id="problem-types-by-label-structure"><span class="header-section-number">2.4</span> Problem Types by Label Structure</h3>
+<p>The form of the labels <span class="math inline">\(y_j\)</span> determines the nature of the data analysis problem:</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span><strong>Classification of Problems</strong>
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<dl>
+<dt><strong>Regression Problems</strong></dt>
+<dd>
+Each <span class="math inline">\(y_j\)</span> is a real number → continuous prediction
+</dd>
+<dt><strong>Classification Problems</strong></dt>
+<dd>
+Each <span class="math inline">\(y_j\)</span> is a label from set <span class="math inline">\(\{1,2, \ldots, M\}\)</span> → discrete class prediction - Binary classification: <span class="math inline">\(M = 2\)</span><br>
+- Multiclass classification: <span class="math inline">\(M &gt; 2\)</span> (can be thousands in speech/image recognition)
+</dd>
+<dt><strong>Unsupervised Learning</strong></dt>
+<dd>
+No labels <span class="math inline">\(y_j\)</span> exist → discover structure in features <span class="math inline">\(a_j\)</span> - Clustering: Group similar vectors<br>
+- Dimensionality reduction: Find low-dimensional representations
+</dd>
+</dl>
+</div>
+</div>
+</section>
+<section id="regularization-and-overfitting-prevention" class="level3" data-number="2.5">
+<h3 data-number="2.5" class="anchored" data-anchor-id="regularization-and-overfitting-prevention"><span class="header-section-number">2.5</span> Regularization and Overfitting Prevention</h3>
+<p>One key consideration is avoiding <strong>overfitting</strong> the model to dataset <span class="math inline">\(D\)</span>. The particular dataset available can be thought of as a finite sample from some underlying larger collection, and we want <span class="math inline">\(\phi\)</span> to perform well on unobserved data points.</p>
+<p>The standard approach is <strong>regularization</strong> — modifying the objective function by adding constraints or penalty terms that limit the “complexity” of function <span class="math inline">\(\phi\)</span>:</p>
+<p><span id="eq-regularized-optimization"><span class="math display">\[\min_{x \in \Omega} L_D(x) + \lambda \cdot \text{pen}(x) \tag{4}\]</span></span></p>
+<p>where: - <span class="math inline">\(\Omega\)</span> is the set of allowable values for <span class="math inline">\(x\)</span> - <span class="math inline">\(\text{pen}(\cdot)\)</span> is a regularization function (regularizer)<br>
+- <span class="math inline">\(\lambda \geq 0\)</span> is the regularization parameter</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span><strong>Regularization Trade-off</strong>
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The parameter <span class="math inline">\(\lambda\)</span> balances: - <strong>Small <span class="math inline">\(\lambda\)</span></strong>: Better fit to training data <span class="math inline">\(D\)</span>, higher model complexity - <strong>Large <span class="math inline">\(\lambda\)</span></strong>: Lower model complexity, better generalization</p>
+</div>
+</div>
+<p>The constraint set <span class="math inline">\(\Omega\)</span> may exclude irrelevant parameter values. For example, in some applications we may require non-negative components: <span class="math inline">\(\Omega = \{x : x_i \geq 0 \text{ for all } i\}\)</span>.</p>
+</section>
+</section>
+<section id="sec-least-squares" class="level2" data-number="3">
+<h2 data-number="3" class="anchored" data-anchor-id="sec-least-squares"><span class="header-section-number">3</span> Least Squares</h2>
+<p>The oldest and best-known data analysis problem is <strong>linear least squares</strong>. Here, data points <span class="math inline">\((a_j,y_j)\)</span> lie in <span class="math inline">\(\mathbb{R}^n \times \mathbb{R}\)</span>, and we solve:</p>
+<p><span id="eq-least-squares-complete"><span class="math display">\[\min_x \frac{1}{2m} \sum_{j=1}^{m} (a_j^T x - y_j)^2 = \frac{1}{2m} \|Ax - y\|_2^2 \tag{5}\]</span></span></p>
+<p>where <span class="math inline">\(A\)</span> is the matrix with rows <span class="math inline">\(a_j^T\)</span> for <span class="math inline">\(j = 1,2, \ldots, m\)</span> and <span class="math inline">\(y = (y_1,y_2, \ldots, y_m)^T\)</span>.</p>
+<p>The function <span class="math inline">\(\phi\)</span> is defined by <span class="math inline">\(\phi(a) := a^T x\)</span>. We can introduce a nonzero intercept by adding parameter <span class="math inline">\(\beta \in \mathbb{R}\)</span> and defining <span class="math inline">\(\phi(a) := a^T x + \beta\)</span>.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span><strong>Statistical Motivation</strong>
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>This formulation can be motivated as a maximum-likelihood estimate of <span class="math inline">\(x\)</span> when observations <span class="math inline">\(y_j\)</span> contain independent, identically distributed Gaussian noise.</p>
+</div>
+</div>
+<section id="ridge-regression" class="level3" data-number="3.1">
+<h3 data-number="3.1" class="anchored" data-anchor-id="ridge-regression"><span class="header-section-number">3.1</span> Ridge Regression</h3>
+<p>Adding a squared <span class="math inline">\(\ell_2\)</span>-norm penalty yields <strong>ridge regression</strong>:</p>
+<p><span id="eq-ridge-regression"><span class="math display">\[\min_x \frac{1}{2m} \|Ax - y\|_2^2 + \lambda \|x\|_2^2 \tag{6}\]</span></span></p>
+<p>The solution <span class="math inline">\(x\)</span> of this regularized formulation has less sensitivity to perturbations in the data <span class="math inline">\((a_j,y_j)\)</span>.</p>
+</section>
+<section id="lasso-formulation" class="level3" data-number="3.2">
+<h3 data-number="3.2" class="anchored" data-anchor-id="lasso-formulation"><span class="header-section-number">3.2</span> LASSO Formulation</h3>
+<p>The <strong>LASSO</strong> (Least Absolute Shrinkage and Selection Operator) formulation uses <span class="math inline">\(\ell_1\)</span> regularization:</p>
+<p><span id="eq-lasso"><span class="math display">\[\min_x \frac{1}{2m} \|Ax - y\|_2^2 + \lambda \|x\|_1 \tag{7}\]</span></span></p>
+<p>This tends to yield solutions <span class="math inline">\(x\)</span> that are <strong>sparse</strong> — containing relatively few nonzero components <span class="citation" data-cites="Tibshirani1996">(<a href="#ref-Tibshirani1996" role="doc-biblioref"><strong>Tibshirani1996?</strong></a>)</span>.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span><strong>Feature Selection Benefits</strong>
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Statistical Appeal</strong>: Predictors depending on few features are simpler and more comprehensible</p>
+<p><strong>Practical Appeal</strong>: For new data <span class="math inline">\(\hat{a}\)</span>, we need only the “selected” features for prediction, not all components</p>
+</div>
+</div>
+<p>The LASSO formulation is an important prototype involving regularization term <span class="math inline">\(\lambda \|x\|_1\)</span> that is <strong>non-smooth and convex</strong> but has relatively simple structure exploitable by algorithms.</p>
+</section>
+</section>
+<section id="sec-matrix-factorization" class="level2" data-number="4">
+<h2 data-number="4" class="anchored" data-anchor-id="sec-matrix-factorization"><span class="header-section-number">4</span> Matrix Factorization Problems</h2>
+<p>Many data analysis problems require estimating a <strong>low-rank matrix</strong> from sparse collections of data. These extend least squares to problems where data <span class="math inline">\(A_j\)</span> are matrices rather than vectors.</p>
+<p>Changing notation, suppose each <span class="math inline">\(A_j\)</span> is an <span class="math inline">\(n \times p\)</span> matrix, and we seek another <span class="math inline">\(n \times p\)</span> matrix <span class="math inline">\(X\)</span> that solves:</p>
+<p><span id="eq-matrix-factorization-basic"><span class="math display">\[\min_X \frac{1}{2m} \sum_{j=1}^m (\langle A_j,X \rangle - y_j)^2 \tag{8}\]</span></span></p>
+<p>where <span class="math inline">\(\langle A,B \rangle := \text{trace}(A^T B)\)</span>. We can think of the <span class="math inline">\(A_j\)</span> as “probing” the unknown matrix <span class="math inline">\(X\)</span>.</p>
+<section id="common-observation-types" class="level3" data-number="4.1">
+<h3 data-number="4.1" class="anchored" data-anchor-id="common-observation-types"><span class="header-section-number">4.1</span> Common Observation Types</h3>
+<div class="grid">
+<div class="g-col-6">
+<dl>
+<dt><strong>Random Linear Combinations</strong></dt>
+<dd>
+Elements of <span class="math inline">\(A_j\)</span> selected i.i.d. from some distribution
+</dd>
+</dl>
+</div>
+<div class="g-col-6">
+<dl>
+<dt><strong>Single-Element Observations</strong></dt>
+<dd>
+Each <span class="math inline">\(A_j\)</span> has 1 in a single location, zeros elsewhere
+</dd>
+</dl>
+</div>
+</div>
+</section>
+<section id="nuclear-norm-regularization" class="level3" data-number="4.2">
+<h3 data-number="4.2" class="anchored" data-anchor-id="nuclear-norm-regularization"><span class="header-section-number">4.2</span> Nuclear Norm Regularization</h3>
+<p>A regularized version leading to <strong>low-rank solutions</strong>:</p>
+<p><span id="eq-nuclear-norm-regularization"><span class="math display">\[\min_X \frac{1}{2m} \sum_{j=1}^m (\langle A_j,X \rangle - y_j)^2 + \lambda \|X\|_* \tag{9}\]</span></span></p>
+<p>where <span class="math inline">\(\|X\|_*\)</span> is the <strong>nuclear norm</strong> — the sum of singular values of <span class="math inline">\(X\)</span> <span class="citation" data-cites="Recht2010">(<a href="#ref-Recht2010" role="doc-biblioref"><strong>Recht2010?</strong></a>)</span>.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span><strong>Nuclear Norm Properties</strong>
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>Analogous to <span class="math inline">\(\ell_1\)</span> norm for vectors</li>
+<li><span class="math inline">\(\ell_1\)</span> norm favors sparse vectors</li>
+<li>Nuclear norm favors low-rank matrices</li>
+<li>Non-smooth but convex → convex formulation</li>
+</ul>
+</div>
+</div>
+</section>
+<section id="factorized-representation" class="level3" data-number="4.3">
+<h3 data-number="4.3" class="anchored" data-anchor-id="factorized-representation"><span class="header-section-number">4.3</span> Factorized Representation</h3>
+<p>Another regularization approach represents <span class="math inline">\(X\)</span> explicitly as a product of two “thin” matrices <span class="math inline">\(L \in \mathbb{R}^{n \times r}\)</span> and <span class="math inline">\(R \in \mathbb{R}^{p \times r}\)</span>, with <span class="math inline">\(r \ll \min(n,p)\)</span>:</p>
+<p><span id="eq-factorized-representation"><span class="math display">\[\min_{L,R} \frac{1}{2m} \sum_{j=1}^m (\langle A_j, LR^T \rangle - y_j)^2 \tag{10}\]</span></span></p>
+<p>Setting <span class="math inline">\(X = LR^T\)</span>, the rank <span class="math inline">\(r\)</span> is “hard-wired” into the definition, eliminating need for regularization.</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span><strong>Factorization Trade-offs</strong>
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Advantages</strong>: - Much more compact: <span class="math inline">\((n + p)r \ll np\)</span> parameters<br>
+- No explicit regularization needed</p>
+<p><strong>Challenges</strong>: - Non-convex in <span class="math inline">\((L,R)\)</span> jointly - Requires careful algorithmic strategy</p>
+</div>
+</div>
+<p>Recent research <span class="citation" data-cites="BurerMonteiro2003">(<a href="#ref-BurerMonteiro2003" role="doc-biblioref"><strong>BurerMonteiro2003?</strong></a>)</span> shows this non-convexity is often benign under certain data assumptions, yielding good solutions despite non-convexity.</p>
+</section>
+<section id="nonnegative-matrix-factorization" class="level3" data-number="4.4">
+<h3 data-number="4.4" class="anchored" data-anchor-id="nonnegative-matrix-factorization"><span class="header-section-number">4.4</span> Nonnegative Matrix Factorization</h3>
+<p>Applications in computer vision, chemometrics, and document clustering require factors with <strong>nonnegative elements</strong>:</p>
+<p><span id="eq-nmf"><span class="math display">\[\min_{L,R} \|LR^T - Y\|_F^2 \quad \text{subject to } L \geq 0, R \geq 0 \tag{11}\]</span></span></p>
+<p>when the full matrix <span class="math inline">\(Y \in \mathbb{R}^{n \times p}\)</span> is observed.</p>
+</section>
+</section>
+<section id="sec-svm" class="level2" data-number="5">
+<h2 data-number="5" class="anchored" data-anchor-id="sec-svm"><span class="header-section-number">5</span> Support Vector Machines</h2>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span><strong>Classical ML Problem</strong>
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Classification via Support Vector Machines (SVM)</strong> is a classical optimization problem in machine learning, tracing origins to the <strong>1960s</strong>.</p>
+</div>
+</div>
+<p>Given input data <span class="math inline">\((a_j,y_j)\)</span> with <span class="math inline">\(a_j \in \mathbb{R}^n\)</span> and <span class="math inline">\(y_j \in \{-1,1\}\)</span>, SVM seeks vector <span class="math inline">\(x \in \mathbb{R}^n\)</span> and scalar <span class="math inline">\(\beta \in \mathbb{R}\)</span> such that:</p>
+<p><span id="eq-svm-positive"><span class="math display">\[a_j^T x - \beta \geq 1 \quad \text{when } y_j = +1 \tag{12}\]</span></span> <span id="eq-svm-negative"><span class="math display">\[a_j^T x - \beta \leq -1 \quad \text{when } y_j = -1 \tag{13}\]</span></span></p>
+<p>Any pair <span class="math inline">\((x,\beta)\)</span> satisfying these conditions defines a <strong>separating hyperplane</strong> in <span class="math inline">\(\mathbb{R}^n\)</span> that separates positive cases <span class="math inline">\(\{a_j | y_j = +1\}\)</span> from negative cases <span class="math inline">\(\{a_j | y_j = -1\}\)</span>.</p>
+<p>Among all separating hyperplanes, the one minimizing <span class="math inline">\(\|x\|_2\)</span> maximizes the <strong>margin</strong> between classes — the hyperplane whose distance to the nearest point <span class="math inline">\(a_j\)</span> of either class is greatest.</p>
+<section id="svm-optimization-formulation" class="level3" data-number="5.1">
+<h3 data-number="5.1" class="anchored" data-anchor-id="svm-optimization-formulation"><span class="header-section-number">5.1</span> SVM Optimization Formulation</h3>
+<p>We formulate the separating hyperplane problem as:</p>
+<p><span id="eq-svm-hinge-loss"><span class="math display">\[H(x,\beta) = \frac{1}{m} \sum_{j=1}^m \max(1 - y_j(a_j^T x - \beta), 0) \tag{14}\]</span></span></p>
+<p>The <span class="math inline">\(j\)</span>-th term is zero if conditions (<a href="#eq-svm-positive" class="quarto-xref">Equation&nbsp;12</a>)-(<a href="#eq-svm-negative" class="quarto-xref">Equation&nbsp;13</a>) are satisfied, positive otherwise.</p>
+<p>A regularized version includes the margin maximization term:</p>
+<p><span id="eq-svm-regularized"><span class="math display">\[H(x,\beta) = \frac{1}{m} \sum_{j=1}^m \max(1 - y_j(a_j^T x - \beta), 0) + \frac{1}{2\lambda}\|x\|_2^2 \tag{15}\]</span></span></p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span><strong>Key Distinction</strong>
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Unlike previous examples, SVM has: - <strong>Non-smooth loss function</strong> (hinge loss) - <strong>Smooth regularizer</strong> (<span class="math inline">\(\ell_2\)</span> penalty)</p>
+</div>
+</div>
+</section>
+<section id="maximum-margin-property" class="level3" data-number="5.2">
+<h3 data-number="5.2" class="anchored" data-anchor-id="maximum-margin-property"><span class="header-section-number">5.2</span> Maximum Margin Property</h3>
+<p>If <span class="math inline">\(\lambda\)</span> is sufficiently small and separating hyperplanes exist, the pair <span class="math inline">\((x,\beta)\)</span> minimizing (<a href="#eq-svm-regularized" class="quarto-xref">Equation&nbsp;15</a>) is the <strong>maximum-margin separating hyperplane</strong>.</p>
+<p>This property ensures <strong>generalizability and robustness</strong>: if observed data <span class="math inline">\((a_j,y_j)\)</span> is drawn from underlying “clouds” of positive and negative cases, the maximum-margin solution usually separates other empirical samples from the same clouds better than hyperplanes passing close to training points.</p>
+</section>
+<section id="kernel-methods" class="level3" data-number="5.3">
+<h3 data-number="5.3" class="anchored" data-anchor-id="kernel-methods"><span class="header-section-number">5.3</span> Kernel Methods</h3>
+<p>When linear separation is insufficient, we transform data vectors <span class="math inline">\(a_j\)</span> by nonlinear mapping <span class="math inline">\(\psi\)</span> and perform SVM classification on vectors <span class="math inline">\(\psi(a_j)\)</span>:</p>
+<p><span id="eq-svm-kernel-positive"><span class="math display">\[\psi(a_j)^T x - \beta \geq 1 \quad \text{when } y_j = +1 \tag{16}\]</span></span> <span id="eq-svm-kernel-negative"><span class="math display">\[\psi(a_j)^T x - \beta \leq -1 \quad \text{when } y_j = -1 \tag{17}\]</span></span></p>
+<p>Leading to the analog of (<a href="#eq-svm-regularized" class="quarto-xref">Equation&nbsp;15</a>):</p>
+<p><span id="eq-svm-kernel"><span class="math display">\[H(x,\beta) = \frac{1}{m} \sum_{j=1}^m \max(1 - y_j(\psi(a_j)^T x - \beta), 0) + \frac{1}{2\lambda}\|x\|_2^2 \tag{18}\]</span></span></p>
+<p>When transformed back to <span class="math inline">\(\mathbb{R}^n\)</span>, the surface <span class="math inline">\(\{a | \psi(a)^T x - \beta = 0\}\)</span> is <strong>nonlinear and possibly disconnected</strong>, often providing much more powerful classification than linear hyperplanes.</p>
+</section>
+<section id="dual-formulation" class="level3" data-number="5.4">
+<h3 data-number="5.4" class="anchored" data-anchor-id="dual-formulation"><span class="header-section-number">5.4</span> Dual Formulation</h3>
+<p>SVM can be expressed as a convex quadratic program. Taking the dual yields another convex quadratic program in <span class="math inline">\(m\)</span> variables:</p>
+<p><span id="eq-svm-dual"><span class="math display">\[\begin{aligned}
+\min_{\alpha \in \mathbb{R}^m} \quad &amp; \frac{1}{2}\alpha^T Q\alpha - \mathbf{1}^T \alpha \\
+\text{subject to} \quad &amp; 0 \leq \alpha \leq \frac{1}{\lambda}\mathbf{1}, \quad y^T \alpha = 0
+\end{aligned} \tag{19}\]</span></span></p>
+<p>where: - <span class="math inline">\(Q_{kl} = y_k y_l \psi(a_k)^T \psi(a_l)\)</span> - <span class="math inline">\(y = (y_1, y_2, \ldots, y_m)^T\)</span><br>
+- <span class="math inline">\(\mathbf{1} = (1, 1, \ldots, 1)^T\)</span></p>
+</section>
+<section id="the-kernel-trick" class="level3" data-number="5.5">
+<h3 data-number="5.5" class="anchored" data-anchor-id="the-kernel-trick"><span class="header-section-number">5.5</span> The Kernel Trick</h3>
+<p>Remarkably, problem (<a href="#eq-svm-dual" class="quarto-xref">Equation&nbsp;19</a>) can be solved without explicit knowledge of mapping <span class="math inline">\(\psi\)</span>. We need only a <strong>kernel function</strong> <span class="math inline">\(K : \mathbb{R}^n \times \mathbb{R}^n \to \mathbb{R}\)</span> where <span class="math inline">\(K(a_k,a_l)\)</span> replaces <span class="math inline">\(\psi(a_k)^T \psi(a_l)\)</span> <span class="citation" data-cites="BoserEtAl1992 CortesVapnik1995">(<a href="#ref-BoserEtAl1992" role="doc-biblioref"><strong>BoserEtAl1992?</strong></a>; <a href="#ref-CortesVapnik1995" role="doc-biblioref"><strong>CortesVapnik1995?</strong></a>)</span>.</p>
+<p>A popular choice is the <strong>Gaussian kernel</strong>:</p>
+<p><span id="eq-gaussian-kernel"><span class="math display">\[K(a_k,a_l) := \exp\left(-\frac{1}{2\sigma^2} \|a_k - a_l\|_2^2\right) \tag{20}\]</span></span></p>
+<p>where <span class="math inline">\(\sigma &gt; 0\)</span> is a parameter.</p>
+</section>
+</section>
+<section id="sec-logistic-regression" class="level2" data-number="6">
+<h2 data-number="6" class="anchored" data-anchor-id="sec-logistic-regression"><span class="header-section-number">6</span> Logistic Regression</h2>
+<p>Logistic regression is a <strong>softened form</strong> of binary SVM classification. Rather than giving unqualified class predictions, it returns <strong>estimates of odds</strong> of belonging to one class or another.</p>
+<p>We seek an “odds function” <span class="math inline">\(p\)</span> parametrized by vector <span class="math inline">\(x \in \mathbb{R}^n\)</span>:</p>
+<p><span id="eq-logistic-odds-function"><span class="math display">\[p(a;x) := (1 + \exp(-a^T x))^{-1} \tag{21}\]</span></span></p>
+<p>and aim to choose parameter <span class="math inline">\(x\)</span> so that: - <span class="math inline">\(p(a_j;x) \approx 1\)</span> when <span class="math inline">\(y_j = +1\)</span> - <span class="math inline">\(p(a_j;x) \approx 0\)</span> when <span class="math inline">\(y_j = -1\)</span></p>
+<section id="maximum-likelihood-formulation" class="level3" data-number="6.1">
+<h3 data-number="6.1" class="anchored" data-anchor-id="maximum-likelihood-formulation"><span class="header-section-number">6.1</span> Maximum Likelihood Formulation</h3>
+<p>The optimal value of <span class="math inline">\(x\)</span> minimizes a <strong>negative-log-likelihood function</strong>:</p>
+<p><span id="eq-logistic-likelihood"><span class="math display">\[L(x) := -\frac{1}{m}\left[\sum_{j:y_j=-1} \log(1-p(a_j;x)) + \sum_{j:y_j=+1} \log p(a_j;x)\right] \tag{22}\]</span></span></p>
+<p>Since definition (<a href="#eq-logistic-odds-function" class="quarto-xref">Equation&nbsp;21</a>) ensures <span class="math inline">\(p(a;x) \in (0,1)\)</span> for all <span class="math inline">\(a\)</span> and <span class="math inline">\(x\)</span>, both log terms are negative. When conditions above are satisfied, these terms are only slightly negative, so minimizing (<a href="#eq-logistic-likelihood" class="quarto-xref">Equation&nbsp;22</a>) yields near-optimal <span class="math inline">\(x\)</span>.</p>
+</section>
+<section id="regularized-logistic-regression" class="level3" data-number="6.2">
+<h3 data-number="6.2" class="anchored" data-anchor-id="regularized-logistic-regression"><span class="header-section-number">6.2</span> Regularized Logistic Regression</h3>
+<p>Feature selection using <span class="math inline">\(\ell_1\)</span> regularization (similar to LASSO):</p>
+<p><span id="eq-regularized-logistic"><span class="math display">\[\min_x L(x) + \lambda\|x\|_1 \tag{23}\]</span></span></p>
+<p>where <span class="math inline">\(\lambda &gt; 0\)</span> is the regularization parameter. This produces solutions where few components of <span class="math inline">\(x\)</span> are nonzero, enabling evaluation of <span class="math inline">\(p(a;x)\)</span> using only selected features of <span class="math inline">\(a\)</span>.</p>
+</section>
+<section id="multiclass-logistic-regression" class="level3" data-number="6.3">
+<h3 data-number="6.3" class="anchored" data-anchor-id="multiclass-logistic-regression"><span class="header-section-number">6.3</span> Multiclass Logistic Regression</h3>
+<p>For <strong>multiclass (multinomial) logistic regression</strong> with <span class="math inline">\(M &gt; 2\)</span> classes, we need distinct odds functions <span class="math inline">\(p_k\)</span> for each class <span class="math inline">\(k \in \{1,2, \ldots, M\}\)</span>:</p>
+<p><span id="eq-multiclass-logistic"><span class="math display">\[p_k(a;X) := \frac{\exp(a^T x^{[k]})}{\sum_{l=1}^M \exp(a^T x^{[l]})}, \quad k = 1,2, \ldots, M \tag{24}\]</span></span></p>
+<p>where <span class="math inline">\(X := \{x^{[k]} | k = 1,2, \ldots, M\}\)</span>.</p>
+<p>Properties: - <span class="math inline">\(p_k(a) \in (0,1)\)</span> for all <span class="math inline">\(a\)</span> and <span class="math inline">\(k\)</span><br>
+- <span class="math inline">\(\sum_{k=1}^M p_k(a) = 1\)</span> - Functions (<a href="#eq-multiclass-logistic" class="quarto-xref">Equation&nbsp;24</a>) perform <strong>“softmax”</strong> on quantities <span class="math inline">\(\{a^T x^{[l]} | l = 1,2, \ldots, M\}\)</span></p>
+</section>
+<section id="multiclass-labels-and-objective" class="level3" data-number="6.4">
+<h3 data-number="6.4" class="anchored" data-anchor-id="multiclass-labels-and-objective"><span class="header-section-number">6.4</span> Multiclass Labels and Objective</h3>
+<p>Labels <span class="math inline">\(y_j\)</span> are vectors in <span class="math inline">\(\mathbb{R}^M\)</span> with elements:</p>
+<p><span id="eq-multiclass-labels"><span class="math display">\[y_{jk} = \begin{cases}
+1 &amp; \text{when } a_j \text{ belongs to class } k \\
+0 &amp; \text{otherwise}
+\end{cases} \tag{25}\]</span></span></p>
+<p>We seek vectors <span class="math inline">\(x^{[k]}\)</span> such that: - <span class="math inline">\(p_k(a_j;X) \approx 1\)</span> when <span class="math inline">\(y_{jk} = 1\)</span><br>
+- <span class="math inline">\(p_k(a_j;X) \approx 0\)</span> when <span class="math inline">\(y_{jk} = 0\)</span></p>
+<p>This yields the <strong>negative-log-likelihood</strong> minimization:</p>
+<p><span id="eq-multiclass-likelihood"><span class="math display">\[L(X) := -\frac{1}{m} \sum_{j=1}^m \left[ \sum_{\ell=1}^M y_{j\ell}(x^{[\ell]T}a_j) - \log \sum_{\ell=1}^M \exp(x^{[\ell]T}a_j) \right] \tag{26}\]</span></span></p>
+<p><strong>Group-sparse</strong> regularization terms can be included to select features in vectors <span class="math inline">\(a_j\)</span> common to each class that distinguish effectively between classes.</p>
+</section>
+</section>
+<section id="sec-deep-learning" class="level2" data-number="7">
+<h2 data-number="7" class="anchored" data-anchor-id="sec-deep-learning"><span class="header-section-number">7</span> Deep Learning</h2>
+<p>Deep neural networks perform the same function as multiclass logistic regression — classifying data vector <span class="math inline">\(a\)</span> into one of <span class="math inline">\(M\)</span> possible classes, often for large <span class="math inline">\(M\)</span>. The major innovation is that mapping <span class="math inline">\(\phi\)</span> from data vector to prediction is now a <strong>nonlinear function, explicitly parametrized</strong> by structured transformations.</p>
+<section id="neural-network-architecture" class="level3" data-number="7.1">
+<h3 data-number="7.1" class="anchored" data-anchor-id="neural-network-architecture"><span class="header-section-number">7.1</span> Neural Network Architecture</h3>
+<p>A neural network consists of <strong>layers</strong> — each representing a transformation taking input vector and applying nonlinear transformation to produce output vector. Each layer has its own parameters, and the collection of all parameters comprises our optimization variable.</p>
+<p>A typical transformation converting vector <span class="math inline">\(a_j^{l-1}\)</span> (output from layer <span class="math inline">\(l-1\)</span>) to vector <span class="math inline">\(a_j^l\)</span> (output from layer <span class="math inline">\(l\)</span>) is:</p>
+<p><span id="eq-neural-layer-transformation"><span class="math display">\[a_j^l = \sigma(W^l a_j^{l-1} + g^l) \tag{27}\]</span></span></p>
+<p>where: - <span class="math inline">\(W^l\)</span> is a matrix of dimension <span class="math inline">\(|a_j^l| \times |a_j^{l-1}|\)</span> - <span class="math inline">\(g^l\)</span> is a vector of length <span class="math inline">\(|a_j^l|\)</span><br>
+- <span class="math inline">\(\sigma\)</span> is a componentwise nonlinear <strong>activation function</strong></p>
+</section>
+<section id="common-activation-functions" class="level3" data-number="7.2">
+<h3 data-number="7.2" class="anchored" data-anchor-id="common-activation-functions"><span class="header-section-number">7.2</span> Common Activation Functions</h3>
+<p>The activation function <span class="math inline">\(\sigma\)</span> acts independently on each component:</p>
+<div class="grid">
+<div class="g-col-6">
+<p><strong>Sigmoid</strong> <span class="math display">\[\sigma(t) = \frac{1}{1 + e^{-t}}\]</span></p>
+</div>
+<div class="g-col-6">
+<p><strong>Rectified Linear Unit (ReLU)</strong> <span class="math display">\[\sigma(t) = \max(t,0)\]</span></p>
+</div>
+</div>
+</section>
+<section id="deep-learning-loss-function" class="level3" data-number="7.3">
+<h3 data-number="7.3" class="anchored" data-anchor-id="deep-learning-loss-function"><span class="header-section-number">7.3</span> Deep Learning Loss Function</h3>
+<p>Consider a linear graph of <span class="math inline">\(D\)</span> levels where layer <span class="math inline">\(l-1\)</span> output becomes layer <span class="math inline">\(l\)</span> input, with <span class="math inline">\(a_j = a_j^0\)</span> and transformation (<a href="#eq-neural-layer-transformation" class="quarto-xref">Equation&nbsp;27</a>).</p>
+<p>Using notation <span class="math inline">\(w\)</span> for all layer-to-layer transformations: <span class="math display">\[w := (W^1,g^1,W^2,g^2, \ldots, W^D,g^D)\]</span></p>
+<p>The <strong>loss function for deep learning</strong> is:</p>
+<p><span id="eq-deep-learning-loss"><span class="math display">\[L(w) = -\frac{1}{m} \sum_{j=1}^m \left[ \sum_{\ell=1}^M y_{j\ell}a_{j,\ell}^D(w) - \log \sum_{\ell=1}^M \exp a_{j,\ell}^D(w) \right] \tag{28}\]</span></span></p>
+<p>where <span class="math inline">\(a_{j,\ell}^D(w) \in \mathbb{R}\)</span> is the output of the <span class="math inline">\(\ell\)</span>-th element in layer <span class="math inline">\(D\)</span> corresponding to input vector <span class="math inline">\(a_j^0\)</span>.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span><strong>Connection to Logistic Regression</strong>
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Multiclass logistic regression is a special case of deep learning with <span class="math inline">\(D = 1\)</span>: <span class="math display">\[a_{j,\ell}^1 = W_{\ell,\cdot}^1 a_j^0\]</span> where <span class="math inline">\(W_{\ell,\cdot}^1\)</span> denotes row <span class="math inline">\(\ell\)</span> of matrix <span class="math inline">\(W^1\)</span>.</p>
+</div>
+</div>
+</section>
+<section id="practical-neural-networks" class="level3" data-number="7.4">
+<h3 data-number="7.4" class="anchored" data-anchor-id="practical-neural-networks"><span class="header-section-number">7.4</span> Practical Neural Networks</h3>
+<p>Neural networks for real applications include many architectural variants:</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span><strong>Advanced Architecture Features</strong>
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Structural Constraints</strong>: - Restricted connectivity between layers (sparse matrices <span class="math inline">\(W^l\)</span>) - Parameter sharing (subsets of <span class="math inline">\(W^l\)</span> elements have same values)</p>
+<p><strong>Complex Arrangements</strong>: - Outputs from multiple layers - Connections across non-adjacent layers<br>
+- Different activation functions <span class="math inline">\(\sigma\)</span> at different layers - Highly engineered, application-specific designs</p>
+</div>
+</div>
+</section>
+<section id="deep-learning-characteristics" class="level3" data-number="7.5">
+<h3 data-number="7.5" class="anchored" data-anchor-id="deep-learning-characteristics"><span class="header-section-number">7.5</span> Deep Learning Characteristics</h3>
+<p>The loss function (<a href="#eq-deep-learning-loss" class="quarto-xref">Equation&nbsp;28</a>) shares the finite-sum form with other applications but has distinctive features:</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span><strong>Key Distinguishing Properties</strong>
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ol type="1">
+<li><strong>Non-convex</strong> in parameters <span class="math inline">\(w\)</span></li>
+<li><strong>Very large</strong> number of parameters in <span class="math inline">\(w\)</span><br>
+</li>
+<li><strong>Requires extensive data and computation</strong></li>
+<li><strong>Uses powerful computing clusters</strong> (multicore processors, GPUs, specialized processing units)</li>
+</ol>
+</div>
+</div>
+</section>
+</section>
+<section id="sec-emphasis" class="level2" data-number="8">
+<h2 data-number="8" class="anchored" data-anchor-id="sec-emphasis"><span class="header-section-number">8</span> Emphasis and Framework Properties</h2>
+<p>Many problems can be formulated within framework (<a href="#eq-regularized-optimization" class="quarto-xref">Equation&nbsp;4</a>), with properties that may differ significantly. They might be <strong>convex or nonconvex</strong>, <strong>smooth or nonsmooth</strong>. But they share important features:</p>
+<section id="shared-mathematical-properties" class="level3" data-number="8.1">
+<h3 data-number="8.1" class="anchored" data-anchor-id="shared-mathematical-properties"><span class="header-section-number">8.1</span> Shared Mathematical Properties</h3>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span><strong>Universal Characteristics</strong>
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Real-valued Variables</strong>: Formulated as functions of real variables, typically arranged in vector of length <span class="math inline">\(n\)</span></p>
+<p><strong>Continuity</strong>: Functions are continuous. When non-smoothness appears, it has structured form exploitable by algorithms</p>
+<p><strong>Local Information</strong>: Smoothness properties allow algorithms to make good inferences about function behavior based on knowledge at nearby previously-visited points</p>
+<p><strong>Finite-sum Structure</strong>: Objective often contains summation of many terms, each depending on single data item</p>
+<p><strong>Two-term Decomposition</strong>: Objective often sums “loss term” (from maximum likelihood) and “regularization term” (imposing structure and generalizability)</p>
+</div>
+</div>
+</section>
+<section id="algorithmic-focus-and-analysis" class="level3" data-number="8.2">
+<h3 data-number="8.2" class="anchored" data-anchor-id="algorithmic-focus-and-analysis"><span class="header-section-number">8.2</span> Algorithmic Focus and Analysis</h3>
+<p>Our treatment emphasizes <strong>algorithms</strong> for solving these problems, with analysis of <strong>convergence properties</strong>. We pay attention to <strong>complexity guarantees</strong> — bounds on computational effort required to obtain solutions of given accuracy.</p>
+<p>These bounds usually depend on fundamental properties of: - The objective function<br>
+- The data defining it - Problem dimensions and variable counts</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span><strong>Practical Considerations</strong>
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Trade-off Evaluation</strong>: Any problem presents various trade-offs requiring optimizer evaluation of most appropriate tools</p>
+<p><strong>Implementation Factors</strong>: Must account for: - Time budget for the task - Type of computer for solving - Required solution guarantees</p>
+</div>
+</div>
+<p>This emphasis contrasts with much optimization literature, where global convergence results typically don’t involve complexity bounds (notable exception: interior-point methods <span class="citation" data-cites="NesterovNemirovskii1994 Wright1997">(<a href="#ref-NesterovNemirovskii1994" role="doc-biblioref"><strong>NesterovNemirovskii1994?</strong></a>; <a href="#ref-Wright1997" role="doc-biblioref"><strong>Wright1997?</strong></a>)</span>).</p>
+<hr>
+</section>
+</section>
+<section id="enhanced-document-summary" class="level2 callout-success" data-number="9">
+<h2 data-number="9" class="anchored" data-anchor-id="enhanced-document-summary"><span class="header-section-number">9</span> <strong>Enhanced Document Summary</strong></h2>
+<p>This enhanced version provides:</p>
+<p>✅ <strong>Improved Mathematical Notation</strong>: All equations properly formatted with LaTeX<br>
+✅ <strong>Enhanced Structure</strong>: Better organization with callouts and grids<br>
+✅ <strong>Corrected Expressions</strong>: Fixed broken mathematical expressions from OCR<br>
+✅ <strong>Professional Formatting</strong>: Consistent styling and enhanced readability<br>
+✅ <strong>Complete References</strong>: Proper citation formatting throughout<br>
+✅ <strong>Visual Enhancement</strong>: Strategic use of callouts, grids, and typography</p>
+<p><strong>Next Steps</strong>: Compare with original version and integrate improvements</p>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

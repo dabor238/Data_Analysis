@@ -1,0 +1,30 @@
+{
+  "conversion": {
+    "tool": "marker",
+    "fallback_tool": "nougat",
+    "output_format": "quarto_markdown"
+  },
+  "processing": {
+    "equation_cleanup": true,
+    "figure_processing": true,
+    "table_processing": true,
+    "bibliography_extraction": true,
+    "chapter_detection": true
+  },
+  "chapter_patterns": [
+    "^#\\s+Chapter\\s+\\d+",
+    "^#\\s+\\d+\\.",
+    "^##?\\s+[A-Z]"
+  ],
+  "output": {
+    "chapters_dir": "./chapters",
+    "temp_dir": "./temp/processed_markdown",
+    "add_frontmatter": true,
+    "preserve_math": true
+  },
+  "book_categories": {
+    "optimization": ["optimization", "linear programming", "nonlinear", "convex", "objective function"],
+    "statistics": ["statistics", "statistical", "probability", "distribution", "hypothesis"],
+    "machine_learning": ["machine learning", "neural", "classification", "regression", "clustering"]
+  }
+}

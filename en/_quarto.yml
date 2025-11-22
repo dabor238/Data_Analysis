@@ -1,0 +1,59 @@
+project:
+  type: book
+  output-dir: ../_book/en
+
+book:
+  title: "Comprehensive Data Analysis Collection"
+  author: "Norah Jones"
+  date: "2025-11-21"
+  language: en
+  chapters:
+    - index.qmd
+    - intro.qmd
+    - part: "Optimization Methods"
+      chapters:
+        - chapters/optimization/01_intro.qmd
+    - part: "Summary & References"
+      chapters:
+        - summary.qmd
+        - references.qmd
+  navbar:
+    right:
+      - text: "Español"
+        href: ../es/index.html
+        icon: translate
+
+bibliography: references.bib
+
+format:
+  html:
+    theme:
+      - cosmo
+      - brand
+    toc: true
+    toc-depth: 3
+    code-fold: true
+    code-summary: "Show code"
+    lang: en
+  pdf:
+    documentclass: scrreprt
+    toc: true
+    lof: true
+    lot: true
+    pdf-engine: lualatex
+    include-in-header:
+      text: |
+        \usepackage{fontspec}
+        \usepackage{unicode-math}
+        \setmainfont{Latin Modern Roman}
+        \setmathfont{Latin Modern Math}
+    keep-tex: true
+    lang: en
+
+language:
+  title-block-author-single: "Author"
+  title-block-published: "Published"
+  title-block-modified: "Modified"
+  search-text-placeholder: "Search"
+  search-matching-documents-text: "matching documents"
+  search-no-results-text: "No results"

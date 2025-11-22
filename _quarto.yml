@@ -1,0 +1,26 @@
+project:
+  type: website
+  output-dir: _book
+
+website:
+  title: "Data Analysis Collection"
+  navbar:
+    title: "Data Analysis Collection"
+    left:
+      - text: "English"
+        href: en/index.html
+      - text: "Español"
+        href: es/index.html
+  page-footer:
+    left: "© 2025 Norah Jones"
+    right: 
+      - icon: translate
+        text: "Available in English and Spanish"
+
+format:
+  html:
+    theme: cosmo
+    toc: true
+
+
+

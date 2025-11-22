@@ -1,0 +1,10 @@
+{
+    "python.defaultInterpreterPath": "./venv/Scripts/python.exe",
+    "python.terminal.activateEnvironment": true,
+    "python.terminal.activateEnvInCurrentTerminal": true,
+    "files.associations": {
+        "*.qmd": "quarto"
+    },
+    "quarto.render.previewType": "external",
+    "python-envs.pythonProjects": []
+}

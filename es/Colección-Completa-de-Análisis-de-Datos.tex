@@ -1,0 +1,1442 @@
+% Options for packages loaded elsewhere
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\PassOptionsToPackage{dvipsnames,svgnames,x11names}{xcolor}
+%
+\documentclass[
+  spanish,
+  letterpaper,
+  DIV=11,
+  numbers=noendperiod]{scrreprt}
+\usepackage{xcolor}
+\usepackage{amsmath,amssymb}
+\setcounter{secnumdepth}{5}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+% Make \paragraph and \subparagraph free-standing
+\makeatletter
+\ifx\paragraph\undefined\else
+  \let\oldparagraph\paragraph
+  \renewcommand{\paragraph}{
+    \@ifstar
+      \xxxParagraphStar
+      \xxxParagraphNoStar
+  }
+  \newcommand{\xxxParagraphStar}[1]{\oldparagraph*{#1}\mbox{}}
+  \newcommand{\xxxParagraphNoStar}[1]{\oldparagraph{#1}\mbox{}}
+\fi
+\ifx\subparagraph\undefined\else
+  \let\oldsubparagraph\subparagraph
+  \renewcommand{\subparagraph}{
+    \@ifstar
+      \xxxSubParagraphStar
+      \xxxSubParagraphNoStar
+  }
+  \newcommand{\xxxSubParagraphStar}[1]{\oldsubparagraph*{#1}\mbox{}}
+  \newcommand{\xxxSubParagraphNoStar}[1]{\oldsubparagraph{#1}\mbox{}}
+\fi
+\makeatother
+
+
+\usepackage{longtable,booktabs,array}
+\usepackage{calc} % for calculating minipage widths
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\usepackage{graphicx}
+\makeatletter
+\newsavebox\pandoc@box
+\newcommand*\pandocbounded[1]{% scales image to fit in text height/width
+  \sbox\pandoc@box{#1}%
+  \Gscale@div\@tempa{\textheight}{\dimexpr\ht\pandoc@box+\dp\pandoc@box\relax}%
+  \Gscale@div\@tempb{\linewidth}{\wd\pandoc@box}%
+  \ifdim\@tempb\p@<\@tempa\p@\let\@tempa\@tempb\fi% select the smaller of both
+  \ifdim\@tempa\p@<\p@\scalebox{\@tempa}{\usebox\pandoc@box}%
+  \else\usebox{\pandoc@box}%
+  \fi%
+}
+% Set default figure placement to htbp
+\def\fps@figure{htbp}
+\makeatother
+
+
+% definitions for citeproc citations
+\NewDocumentCommand\citeproctext{}{}
+\NewDocumentCommand\citeproc{mm}{%
+  \begingroup\def\citeproctext{#2}\cite{#1}\endgroup}
+\makeatletter
+ % allow citations to break across lines
+ \let\@cite@ofmt\@firstofone
+ % avoid brackets around text for \cite:
+ \def\@biblabel#1{}
+ \def\@cite#1#2{{#1\if@tempswa , #2\fi}}
+\makeatother
+\newlength{\cslhangindent}
+\setlength{\cslhangindent}{1.5em}
+\newlength{\csllabelwidth}
+\setlength{\csllabelwidth}{3em}
+\newenvironment{CSLReferences}[2] % #1 hanging-indent, #2 entry-spacing
+ {\begin{list}{}{%
+  \setlength{\itemindent}{0pt}
+  \setlength{\leftmargin}{0pt}
+  \setlength{\parsep}{0pt}
+  % turn on hanging indent if param 1 is 1
+  \ifodd #1
+   \setlength{\leftmargin}{\cslhangindent}
+   \setlength{\itemindent}{-1\cslhangindent}
+  \fi
+  % set entry spacing
+  \setlength{\itemsep}{#2\baselineskip}}}
+ {\end{list}}
+\usepackage{calc}
+\newcommand{\CSLBlock}[1]{\hfill\break\parbox[t]{\linewidth}{\strut\ignorespaces#1\strut}}
+\newcommand{\CSLLeftMargin}[1]{\parbox[t]{\csllabelwidth}{\strut#1\strut}}
+\newcommand{\CSLRightInline}[1]{\parbox[t]{\linewidth - \csllabelwidth}{\strut#1\strut}}
+\newcommand{\CSLIndent}[1]{\hspace{\cslhangindent}#1}
+
+\ifLuaTeX
+\usepackage[bidi=basic]{babel}
+\else
+\usepackage[bidi=default]{babel}
+\fi
+% get rid of language-specific shorthands (see #6817):
+\let\LanguageShortHands\languageshorthands
+\def\languageshorthands#1{}
+
+
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+
+
+
+ 
+
+
+\usepackage{fontspec}
+\usepackage{unicode-math}
+\setmainfont{Latin Modern Roman}
+\setmathfont{Latin Modern Math}
+\KOMAoption{captions}{tableheading}
+\makeatletter
+\@ifpackageloaded{tcolorbox}{}{\usepackage[skins,breakable]{tcolorbox}}
+\@ifpackageloaded{fontawesome5}{}{\usepackage{fontawesome5}}
+\definecolor{quarto-callout-color}{HTML}{909090}
+\definecolor{quarto-callout-note-color}{HTML}{0758E5}
+\definecolor{quarto-callout-important-color}{HTML}{CC1914}
+\definecolor{quarto-callout-warning-color}{HTML}{EB9113}
+\definecolor{quarto-callout-tip-color}{HTML}{00A047}
+\definecolor{quarto-callout-caution-color}{HTML}{FC5300}
+\definecolor{quarto-callout-color-frame}{HTML}{acacac}
+\definecolor{quarto-callout-note-color-frame}{HTML}{4582ec}
+\definecolor{quarto-callout-important-color-frame}{HTML}{d9534f}
+\definecolor{quarto-callout-warning-color-frame}{HTML}{f0ad4e}
+\definecolor{quarto-callout-tip-color-frame}{HTML}{02b875}
+\definecolor{quarto-callout-caution-color-frame}{HTML}{fd7e14}
+\makeatother
+\makeatletter
+\@ifpackageloaded{bookmark}{}{\usepackage{bookmark}}
+\makeatother
+\makeatletter
+\@ifpackageloaded{caption}{}{\usepackage{caption}}
+\AtBeginDocument{%
+\ifdefined\contentsname
+  \renewcommand*\contentsname{Tabla de contenidos}
+\else
+  \newcommand\contentsname{Tabla de contenidos}
+\fi
+\ifdefined\listfigurename
+  \renewcommand*\listfigurename{Listado de Figuras}
+\else
+  \newcommand\listfigurename{Listado de Figuras}
+\fi
+\ifdefined\listtablename
+  \renewcommand*\listtablename{Listado de Tablas}
+\else
+  \newcommand\listtablename{Listado de Tablas}
+\fi
+\ifdefined\figurename
+  \renewcommand*\figurename{Figura}
+\else
+  \newcommand\figurename{Figura}
+\fi
+\ifdefined\tablename
+  \renewcommand*\tablename{Tabla}
+\else
+  \newcommand\tablename{Tabla}
+\fi
+}
+\@ifpackageloaded{float}{}{\usepackage{float}}
+\floatstyle{ruled}
+\@ifundefined{c@chapter}{\newfloat{codelisting}{h}{lop}}{\newfloat{codelisting}{h}{lop}[chapter]}
+\floatname{codelisting}{Listado}
+\newcommand*\listoflistings{\listof{codelisting}{Listado de Listados}}
+\makeatother
+\makeatletter
+\makeatother
+\makeatletter
+\@ifpackageloaded{caption}{}{\usepackage{caption}}
+\@ifpackageloaded{subcaption}{}{\usepackage{subcaption}}
+\makeatother
+\usepackage{bookmark}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  pdftitle={Colección Completa de Análisis de Datos},
+  pdfauthor={Norah Jones},
+  pdflang={es},
+  colorlinks=true,
+  linkcolor={blue},
+  filecolor={Maroon},
+  citecolor={Blue},
+  urlcolor={Blue},
+  pdfcreator={LaTeX via pandoc}}
+
+
+\title{Colección Completa de Análisis de Datos}
+\author{Norah Jones}
+\date{2025-11-21}
+\begin{document}
+\maketitle
+
+\renewcommand*\contentsname{Tabla de contenidos}
+{
+\hypersetup{linkcolor=}
+\setcounter{tocdepth}{2}
+\tableofcontents
+}
+\listoffigures
+\listoftables
+
+\bookmarksetup{startatroot}
+
+\chapter*{Preface}\label{preface}
+\addcontentsline{toc}{chapter}{Preface}
+
+\markboth{Preface}{Preface}
+
+This is a Quarto book.
+
+To learn more about Quarto books visit
+\url{https://quarto.org/docs/books}.
+
+\bookmarksetup{startatroot}
+
+\chapter{Introduction}\label{introduction}
+
+This is a book created from markdown and executable code.
+
+See Knuth (1984) for additional discussion of literate programming.
+
+\part{Métodos de Optimización}
+
+\chapter{Introducción a la Optimización para Ciencia de
+Datos}\label{introducciuxf3n-a-la-optimizaciuxf3n-para-ciencia-de-datos}
+
+Fundamentos de Optimización Continua
+
+\hfill\break
+
+\begin{tcolorbox}[enhanced jigsaw, title={\textbf{Resumen del Capítulo}}, colbacktitle=quarto-callout-note-color!10!white, coltitle=black, breakable, colback=white, left=2mm, opacityback=0, bottomtitle=1mm, toptitle=1mm, titlerule=0mm, opacitybacktitle=0.6, rightrule=.15mm, bottomrule=.15mm, colframe=quarto-callout-note-color-frame, leftrule=.75mm, arc=.35mm, toprule=.15mm]
+
+Este capítulo introduce los fundamentos de los \textbf{algoritmos de
+optimización continua} para aplicaciones de ciencia de datos. Exploramos
+cómo los problemas de aprendizaje automático, estadística y análisis de
+datos pueden formularse como desafíos de optimización.
+
+\textbf{Temas Principales:}
+
+\begin{itemize}
+\tightlist
+\item
+  Análisis de datos a través de la lente de optimización
+\item
+  Problemas clásicos de optimización (Mínimos Cuadrados, LASSO)
+\item
+  Factorización de matrices y problemas de bajo rango
+\item
+  Formulaciones de aprendizaje automático (SVM, Regresión Logística)
+\item
+  Desafíos de optimización en aprendizaje profundo
+\end{itemize}
+
+\end{tcolorbox}
+
+\section{Introducción}\label{sec-introduction}
+
+Este libro se enfoca en los \textbf{fundamentos de algoritmos} para
+resolver problemas de optimización continua, que involucran:
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Minimizar funciones} de múltiples variables de valores reales
+\item
+  \textbf{Manejar restricciones} en los valores de las variables
+\item
+  \textbf{Enfatizar problemas convexos} con aplicaciones en ciencia de
+  datos
+\item
+  \textbf{Conectar teoría y práctica} en aprendizaje automático,
+  estadística y análisis de datos
+\end{itemize}
+
+\begin{tcolorbox}[enhanced jigsaw, title=\textcolor{quarto-callout-important-color}{\faExclamation}\hspace{0.5em}{\textbf{Enfoque Principal}}, colbacktitle=quarto-callout-important-color!10!white, coltitle=black, breakable, colback=white, left=2mm, opacityback=0, bottomtitle=1mm, toptitle=1mm, titlerule=0mm, opacitybacktitle=0.6, rightrule=.15mm, bottomrule=.15mm, colframe=quarto-callout-important-color-frame, leftrule=.75mm, arc=.35mm, toprule=.15mm]
+
+Nuestra selección de temas está \textbf{motivada por la relevancia para
+la ciencia de datos} --- las formulaciones y algoritmos discutidos son
+directamente útiles para resolver problemas del mundo real en
+aprendizaje automático, estadística y análisis de datos.
+
+\end{tcolorbox}
+
+Este capítulo describe varios \textbf{paradigmas clave de la ciencia de
+datos} y demuestra cómo pueden formularse como problemas de optimización
+continua. Comprender las \textbf{propiedades de suavidad y estructura}
+de estas formulaciones es crucial para seleccionar algoritmos
+apropiados.
+
+\section{Análisis de Datos y Optimización}\label{sec-data-analysis}
+
+El problema de optimización típico en análisis de datos implica
+encontrar un \textbf{modelo que equilibre} dos objetivos competitivos:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \textbf{Concordancia con los datos recopilados}
+\item
+  \textbf{Adhesión a restricciones estructurales} que reflejan nuestras
+  creencias sobre buenos modelos
+\end{enumerate}
+
+\subsection{El Marco de Ciencia de
+Datos}\label{el-marco-de-ciencia-de-datos}
+
+En un problema de análisis típico, nuestro \textbf{conjunto de datos}
+consiste en \(m\) objetos:
+
+\begin{equation}\phantomsection\label{eq-dataset}{D := \{(a_j, y_j), j = 1,2, \ldots, m\}}\end{equation}
+
+donde:
+
+\textbf{Características (\(a_j\))}
+
+\begin{itemize}
+\tightlist
+\item
+  Vector o matriz de características
+\item
+  Variables de entrada
+\item
+  Predictores
+\end{itemize}
+
+\textbf{Etiquetas/Observaciones (\(y_j\))}
+
+\begin{itemize}
+\tightlist
+\item
+  Valores objetivo
+\item
+  Respuestas
+\item
+  Resultados
+\end{itemize}
+
+\begin{tcolorbox}[enhanced jigsaw, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{\textbf{Preprocesamiento de Datos}}, colbacktitle=quarto-callout-tip-color!10!white, coltitle=black, breakable, colback=white, left=2mm, opacityback=0, bottomtitle=1mm, toptitle=1mm, titlerule=0mm, opacitybacktitle=0.6, rightrule=.15mm, bottomrule=.15mm, colframe=quarto-callout-tip-color-frame, leftrule=.75mm, arc=.35mm, toprule=.15mm]
+
+Asumimos que los datos han sido \textbf{limpiados} de modo que todos los
+pares \((a_j, y_j)\) tienen tamaño y forma consistentes.
+
+\end{tcolorbox}
+
+\subsection{El Objetivo de
+Aprendizaje}\label{el-objetivo-de-aprendizaje}
+
+La \textbf{tarea de análisis de datos} consiste en descubrir una función
+\(\phi\) tal que:
+
+\[\phi(a_j) \approx y_j \quad \text{para la mayoría } j = 1,2, \ldots, m\]
+
+\begin{tcolorbox}[enhanced jigsaw, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{\textbf{Terminología}}, colbacktitle=quarto-callout-note-color!10!white, coltitle=black, breakable, colback=white, left=2mm, opacityback=0, bottomtitle=1mm, toptitle=1mm, titlerule=0mm, opacitybacktitle=0.6, rightrule=.15mm, bottomrule=.15mm, colframe=quarto-callout-note-color-frame, leftrule=.75mm, arc=.35mm, toprule=.15mm]
+
+El proceso de descubrir el mapeo \(\phi\) se suele llamar
+\textbf{``aprendizaje''} o \textbf{``entrenamiento''}.
+
+\end{tcolorbox}
+
+\subsection{Parametrización y Formulación de
+Optimización}\label{parametrizaciuxf3n-y-formulaciuxf3n-de-optimizaciuxf3n}
+
+La función \(\phi\) a menudo se define en términos de un \textbf{vector
+o matriz de parámetros}, que denotamos por \(x\) o \(X\). Con estas
+parametrizaciones, el problema de identificar \(\phi\) se convierte en
+un \textbf{problema tradicional de ajuste de datos}:
+
+\begin{tcolorbox}[enhanced jigsaw, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{\textbf{Objetivo de Optimización}}, colbacktitle=quarto-callout-tip-color!10!white, coltitle=black, breakable, colback=white, left=2mm, opacityback=0, bottomtitle=1mm, toptitle=1mm, titlerule=0mm, opacitybacktitle=0.6, rightrule=.15mm, bottomrule=.15mm, colframe=quarto-callout-tip-color-frame, leftrule=.75mm, arc=.35mm, toprule=.15mm]
+
+Encontrar los parámetros \(x\) que definen \(\phi\) tal que
+\(\phi(a_j) \approx y_j\) para \(j = 1,2, \ldots, m\) en algún sentido
+óptimo.
+
+\end{tcolorbox}
+
+Una vez que definimos ``óptimo'' (y posiblemente agregamos restricciones
+en los valores permitidos de los parámetros), tenemos un problema de
+optimización.
+
+\subsection{Formulación de Suma
+Finita}\label{formulaciuxf3n-de-suma-finita}
+
+Frecuentemente, estas formulaciones de optimización tienen funciones
+objetivo del \textbf{tipo suma finita}:
+
+\begin{equation}\phantomsection\label{eq-finite-sum-formulation}{L_D(x) := \frac{1}{m} \sum_{j=1}^{m} \ell(a_j, y_j; x)}\end{equation}
+
+donde:
+
+\begin{itemize}
+\tightlist
+\item
+  \(\ell(a,y;x)\) representa la \textbf{``pérdida''} incurrida por no
+  alinear correctamente nuestra predicción \(\phi(a)\) con \(y\)
+\item
+  \(L_D(x)\) mide la \textbf{pérdida promedio} acumulada sobre todo el
+  conjunto de datos cuando el vector de parámetros es igual a \(x\)
+\end{itemize}
+
+\subsection{Predicción y Propiedades del
+Modelo}\label{predicciuxf3n-y-propiedades-del-modelo}
+
+Una vez que se ha aprendido un valor apropiado de \(x\) (y por lo tanto
+\(\phi\)) de los datos, podemos usarlo para hacer predicciones sobre
+otros elementos de datos que no están en el conjunto \(D\)
+(Ecuación~\ref{eq-dataset}).
+
+Dado un elemento de datos no visto \(\hat{a}\) del mismo tipo que
+\(a_j\), \(j = 1,2, \ldots, m\), predecimos que la etiqueta \(\hat{y}\)
+asociada con \(\hat{a}\) será \(\phi(\hat{a})\).
+
+El mapeo \(\phi\) también puede exponer otras estructuras y propiedades
+en el conjunto de datos:
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Selección de Características}: Revela que solo una pequeña
+  fracción de las características en \(a_j\) son necesarias para
+  predecir confiablemente la etiqueta \(y_j\)
+\item
+  \textbf{Descubrimiento de Subespacios}: Cuando el parámetro \(x\) es
+  una matriz, podría revelar un subespacio de baja dimensión que
+  contiene la mayoría de los vectores \(a_j\)
+\item
+  \textbf{Matrices Estructuradas}: Podría revelar una matriz con
+  estructura particular (bajo rango, dispersa) tal que las observaciones
+  de \(X\) motivadas por los vectores de características \(a_j\)
+  produzcan resultados cercanos a \(y_j\)
+\end{itemize}
+
+\subsection{Tipos de Problemas de Análisis de
+Datos}\label{sec-problem-types}
+
+La forma de las etiquetas \(y_j\) difiere según la naturaleza del
+problema de análisis de datos:
+
+\subsubsection{Regresión}
+
+Si cada \(y_j\) es un \textbf{número real}, típicamente tenemos un
+\textbf{problema de regresión}.
+
+\subsubsection{Clasificación}
+
+Cuando cada \(y_j\) es una \textbf{etiqueta} (un entero del conjunto
+\(\{1,2, \ldots, M\}\)) indicando que \(a_j\) pertenece a una de \(M\)
+clases:
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Clasificación Binaria}: \(M = 2\)
+\item
+  \textbf{Clasificación Multiclase}: \(M > 2\)
+\end{itemize}
+
+\begin{tcolorbox}[enhanced jigsaw, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Nota}, colbacktitle=quarto-callout-note-color!10!white, coltitle=black, breakable, colback=white, left=2mm, opacityback=0, bottomtitle=1mm, toptitle=1mm, titlerule=0mm, opacitybacktitle=0.6, rightrule=.15mm, bottomrule=.15mm, colframe=quarto-callout-note-color-frame, leftrule=.75mm, arc=.35mm, toprule=.15mm]
+
+En problemas de análisis de datos que surgen en reconocimiento de voz e
+imagen, \(M\) puede ser muy grande, del orden de miles o más.
+
+\end{tcolorbox}
+
+\subsubsection{Aprendizaje No Supervisado}
+
+Las etiquetas \(y_j\) pueden ni siquiera existir; el conjunto de datos
+puede contener solo los vectores de características \(a_j\),
+\(j = 1,2, \ldots, m\). Todavía hay problemas interesantes de análisis
+de datos asociados con estos casos. Por ejemplo, podemos desear agrupar
+los \(a_j\) en \textbf{clústeres} (donde los vectores dentro de cada
+clúster se consideran funcionalmente similares) o identificar un
+\textbf{subespacio de baja dimensión} (o una colección de subespacios de
+baja dimensión) que aproximadamente contenga los \(a_j\).
+
+En tales problemas, esencialmente estamos aprendiendo las etiquetas
+\(y_j\) junto con la función \(\phi\). Por ejemplo, en un problema de
+clustering, \(y_j\) podría representar el clúster al cual se asigna
+\(a_j\).
+
+\subsection{Complicaciones de Datos y
+Robustez}\label{complicaciones-de-datos-y-robustez}
+
+Incluso después de la limpieza y preparación, la configuración anterior
+puede contener muchas complicaciones:
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Ruido y Corrupción}: Las cantidades \((a_j,y_j)\) pueden
+  contener ruido o estar corrompidas de otra manera, requiriendo que el
+  mapeo \(\phi\) sea robusto a tales errores
+\item
+  \textbf{Datos Faltantes}: Partes de los vectores \(a_j\) pueden estar
+  faltando, o podemos no conocer todas las etiquetas \(y_j\)
+\item
+  \textbf{Datos en Flujo}: Los datos pueden estar llegando de forma
+  continua en lugar de estar disponibles todos a la vez, requiriendo
+  \textbf{aprendizaje en línea} de \(\phi\)
+\end{itemize}
+
+\subsection{Regularization and Overfitting}\label{sec-regularization}
+
+One consideration that arises frequently is that we wish to avoid
+\textbf{overfitting} the model to the data set \(D\) in
+(Ecuación~\ref{eq-dataset}).
+
+\begin{tcolorbox}[enhanced jigsaw, title=\textcolor{quarto-callout-important-color}{\faExclamation}\hspace{0.5em}{\textbf{Generalization Goal}}, colbacktitle=quarto-callout-important-color!10!white, coltitle=black, breakable, colback=white, left=2mm, opacityback=0, bottomtitle=1mm, toptitle=1mm, titlerule=0mm, opacitybacktitle=0.6, rightrule=.15mm, bottomrule=.15mm, colframe=quarto-callout-important-color-frame, leftrule=.75mm, arc=.35mm, toprule=.15mm]
+
+The particular data set \(D\) available to us can often be thought of as
+a finite sample drawn from some underlying larger (perhaps infinite)
+collection of possible data points. We wish the function \(\phi\) to
+perform well on the \textbf{unobserved data points} as well as the
+observed subset \(D\).
+
+\end{tcolorbox}
+
+In other words, we want \(\phi\) to be not too sensitive to the
+particular sample \(D\) that is used to define empirical objective
+functions such as (Ecuación~\ref{eq-finite-sum-formulation}).
+
+One way to avoid this issue is to modify the objective function by
+adding constraints or penalty terms, in a way that limits the
+``complexity'' of the function \(\phi\). This process is typically
+called \textbf{regularization}.
+
+An optimization formulation that balances fit to the training data
+\(D\), model complexity, and model structure is:
+
+\begin{equation}\phantomsection\label{eq-regularized-optimization}{\min_{x \in \Omega} L_D(x) + \lambda \text{pen}(x)}\end{equation}
+
+where:
+
+\begin{itemize}
+\tightlist
+\item
+  \(\Omega\) is a set of allowable values for \(x\)
+\item
+  \(\text{pen}(\cdot)\) is a regularization function or
+  \textbf{regularizer}
+\item
+  \(\lambda \geq 0\) is a \textbf{regularization parameter}
+\end{itemize}
+
+The regularizer usually takes lower values for parameters \(x\) that
+yield functions \(\phi\) with lower complexity. For example, \(\phi\)
+may depend on fewer of the features in the data vectors \(a_j\) or may
+be less oscillatory.
+
+\subsubsection{Ajuste del Parámetro de
+Regularización}\label{ajuste-del-paruxe1metro-de-regularizaciuxf3n}
+
+El parámetro \(\lambda\) puede ser ``ajustado'' para proporcionar un
+equilibrio apropiado:
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Valores más pequeños de \(\lambda\)}: Producen soluciones que
+  se ajustan a los datos de entrenamiento \(D\) con mayor precisión
+\item
+  \textbf{Valores más grandes de \(\lambda\)}: Conducen a modelos menos
+  complejos
+\end{itemize}
+
+\begin{tcolorbox}[enhanced jigsaw, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{\textbf{Perspectiva Moderna sobre el Sobreajuste}}, colbacktitle=quarto-callout-note-color!10!white, coltitle=black, breakable, colback=white, left=2mm, opacityback=0, bottomtitle=1mm, toptitle=1mm, titlerule=0mm, opacitybacktitle=0.6, rightrule=.15mm, bottomrule=.15mm, colframe=quarto-callout-note-color-frame, leftrule=.75mm, arc=.35mm, toprule=.15mm]
+
+Curiosamente, el concepto de sobreajuste ha sido reexaminado en años
+recientes, particularmente en el contexto del aprendizaje profundo,
+donde los modelos que se ajustan perfectamente a los datos de
+entrenamiento a veces se observa que también hacen un buen trabajo al
+clasificar datos previamente no vistos. Este fenómeno es un tema de
+intensa investigación actual en la comunidad de aprendizaje automático.
+
+\end{tcolorbox}
+
+\subsubsection{Conjuntos de
+Restricciones}\label{conjuntos-de-restricciones}
+
+El conjunto de restricciones \(\Omega\) en
+(Ecuación~\ref{eq-regularized-optimization}) puede elegirse para excluir
+valores de \(x\) que no son relevantes o útiles en el contexto del
+problema de análisis de datos. Por ejemplo:
+
+\begin{itemize}
+\tightlist
+\item
+  En algunas aplicaciones, podemos no desear considerar valores de \(x\)
+  en los que uno o más componentes sean negativos
+\item
+  Podríamos establecer \(\Omega\) como el conjunto de vectores cuyos
+  componentes son todos mayores o iguales a cero
+\end{itemize}
+
+\subsection{Resumen del Marco}\label{resumen-del-marco}
+
+Ahora examinamos algunos problemas particulares en ciencia de datos que
+dan lugar a formulaciones que son casos especiales de nuestro problema
+maestro (Ecuación~\ref{eq-regularized-optimization}). Veremos que:
+
+\begin{itemize}
+\tightlist
+\item
+  Una gran variedad de problemas puede formularse usando este marco
+  general
+\item
+  Dentro de este marco, hay una amplia gama de estructuras que deben
+  tenerse en cuenta al elegir algoritmos para resolver estos problemas
+  de manera eficiente
+\end{itemize}
+
+\section{Mínimos Cuadrados}\label{sec-least-squares}
+
+Probablemente el \textbf{problema de análisis de datos más antiguo y
+conocido} es el de mínimos cuadrados lineales. Aquí, los puntos de datos
+\((a_j,y_j)\) se encuentran en \(\mathbb{R}^n \times \mathbb{R}\), y
+resolvemos:
+
+\begin{equation}\phantomsection\label{eq-least-squares-complete}{\min_x \frac{1}{2m} \sum_{j=1}^{m} (a_j^T x - y_j)^2 = \frac{1}{2m} \|Ax - y\|_2^2}\end{equation}
+
+donde:
+
+\begin{itemize}
+\tightlist
+\item
+  \(A\) es la matriz cuyas filas son \(a_j^T\), \(j = 1,2, \ldots, m\)
+\item
+  \(y = (y_1,y_2, \ldots, y_m)^T\)
+\end{itemize}
+
+En la terminología anterior, la función \(\phi\) se define por
+\(\phi(a) := a^T x\).
+
+\begin{tcolorbox}[enhanced jigsaw, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{\textbf{Agregar un Intercepto}}, colbacktitle=quarto-callout-tip-color!10!white, coltitle=black, breakable, colback=white, left=2mm, opacityback=0, bottomtitle=1mm, toptitle=1mm, titlerule=0mm, opacitybacktitle=0.6, rightrule=.15mm, bottomrule=.15mm, colframe=quarto-callout-tip-color-frame, leftrule=.75mm, arc=.35mm, toprule=.15mm]
+
+Podemos introducir un intercepto no nulo agregando un parámetro
+adicional \(\beta \in \mathbb{R}\) y definiendo
+\(\phi(a) := a^T x + \beta\).
+
+\end{tcolorbox}
+
+\subsection{Motivación Estadística}\label{motivaciuxf3n-estaduxedstica}
+
+Esta formulación puede motivarse estadísticamente, como una
+\textbf{estimación de máxima verosimilitud} de \(x\) cuando las
+observaciones \(y_j\) son exactas excepto por ruido Gaussiano
+independiente e idénticamente distribuido (i.i.d.).
+
+\subsection{Regresión Ridge}\label{regresiuxf3n-ridge}
+
+Podemos agregar una variedad de funciones de penalización a este
+problema básico de mínimos cuadrados para imponer estructura deseable en
+\(x\) y, por lo tanto, en \(\phi\). Por ejemplo, la \textbf{regresión
+ridge} agrega una penalización de norma \(\ell_2\) al cuadrado:
+
+\begin{equation}\phantomsection\label{eq-ridge-regression}{\min_x \frac{1}{2m} \|Ax - y\|_2^2 + \lambda \|x\|_2^2}\end{equation}
+
+para algún parámetro \(\lambda > 0\). La solución \(x\) de esta
+formulación regularizada tiene menos sensibilidad a perturbaciones en
+los datos \((a_j,y_j)\).
+
+\subsection{Formulación LASSO}\label{formulaciuxf3n-lasso}
+
+La formulación \textbf{LASSO} (Least Absolute Shrinkage and Selection
+Operator):
+
+\begin{equation}\phantomsection\label{eq-lasso}{\min_x \frac{1}{2m} \|Ax - y\|_2^2 + \lambda \|x\|_1}\end{equation}
+
+tiende a producir soluciones \(x\) que son \textbf{dispersas} -- es
+decir, que contienen relativamente pocos componentes no nulos.
+
+\begin{tcolorbox}[enhanced jigsaw, title=\textcolor{quarto-callout-important-color}{\faExclamation}\hspace{0.5em}{\textbf{Selección de Características}}, colbacktitle=quarto-callout-important-color!10!white, coltitle=black, breakable, colback=white, left=2mm, opacityback=0, bottomtitle=1mm, toptitle=1mm, titlerule=0mm, opacitybacktitle=0.6, rightrule=.15mm, bottomrule=.15mm, colframe=quarto-callout-important-color-frame, leftrule=.75mm, arc=.35mm, toprule=.15mm]
+
+Esta formulación realiza \textbf{selección de características}: Las
+ubicaciones de los componentes no nulos en \(x\) revelan aquellos
+componentes de \(a_j\) que son instrumentales para determinar la
+observación \(y_j\).
+
+\end{tcolorbox}
+
+\subsubsection{Ventajas de la Selección de
+Características}\label{ventajas-de-la-selecciuxf3n-de-caracteruxedsticas}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \textbf{Atractivo Estadístico}: Los predictores que dependen de pocas
+  características son potencialmente más simples y más comprensibles que
+  aquellos que dependen de muchas características
+\item
+  \textbf{Beneficios Prácticos}: En lugar de recopilar todos los
+  componentes de un nuevo vector de datos \(\hat{a}\), solo necesitamos
+  encontrar las características ``seleccionadas'' porque solo estas son
+  necesarias para hacer una predicción
+\end{enumerate}
+
+\begin{tcolorbox}[enhanced jigsaw, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{\textbf{LASSO como Prototipo}}, colbacktitle=quarto-callout-note-color!10!white, coltitle=black, breakable, colback=white, left=2mm, opacityback=0, bottomtitle=1mm, toptitle=1mm, titlerule=0mm, opacitybacktitle=0.6, rightrule=.15mm, bottomrule=.15mm, colframe=quarto-callout-note-color-frame, leftrule=.75mm, arc=.35mm, toprule=.15mm]
+
+La formulación LASSO (Ecuación~\ref{eq-lasso}) es un prototipo
+importante para muchos problemas en análisis de datos en el sentido de
+que involucra un término de regularización \(\lambda \|x\|_1\) que es no
+suave y convexo pero tiene una estructura relativamente simple que puede
+ser potencialmente explotada por algoritmos.
+
+\end{tcolorbox}
+
+\section{Problemas de Factorización de
+Matrices}\label{sec-matrix-factorization}
+
+Hay una variedad de problemas de análisis de datos que requieren estimar
+una \textbf{matriz de bajo rango} a partir de alguna colección dispersa
+de datos. Tales problemas pueden formularse como una extensión natural
+de mínimos cuadrados a problemas en los que los datos \(a_j\) se
+representan naturalmente como matrices en lugar de vectores.
+
+\subsection{Problema Básico de Sensado de
+Matrices}\label{problema-buxe1sico-de-sensado-de-matrices}
+
+Cambiando ligeramente la notación, suponemos que cada \(A_j\) es una
+matriz \(n \times p\), y buscamos otra matriz \(n \times p\) \(X\) que
+resuelva:
+
+\begin{equation}\phantomsection\label{eq-matrix-sensing}{\min_X \frac{1}{2m} \sum_{j=1}^{m} (\langle A_j, X \rangle - y_j)^2}\end{equation}
+
+donde \(\langle A, B \rangle := \text{trace}(A^T B)\).
+
+Aquí podemos pensar en las \(A_j\) como ``sondeo'' de la matriz
+desconocida \(X\). Los tipos de observaciones comúnmente considerados
+son:
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Combinaciones lineales aleatorias}: Los elementos de \(A_j\)
+  se seleccionan i.i.d. de alguna distribución
+\item
+  \textbf{Observaciones de elementos individuales}: Cada \(A_j\) tiene 1
+  en una única ubicación y ceros en otros lugares
+\end{itemize}
+
+\subsection{Regularización de Norma
+Nuclear}\label{regularizaciuxf3n-de-norma-nuclear}
+
+Una versión regularizada de (Ecuación~\ref{eq-matrix-sensing}), que
+conduce a soluciones \(X\) de bajo rango, es:
+
+\begin{equation}\phantomsection\label{eq-nuclear-norm}{\min_X \frac{1}{2m} \sum_{j=1}^{m} (\langle A_j, X \rangle - y_j)^2 + \lambda \|X\|_*}\end{equation}
+
+donde \(\|X\|_*\) es la \textbf{norma nuclear}, que es la suma de
+valores singulares de \(X\).
+
+\begin{tcolorbox}[enhanced jigsaw, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{\textbf{Propiedades de la Norma Nuclear}}, colbacktitle=quarto-callout-note-color!10!white, coltitle=black, breakable, colback=white, left=2mm, opacityback=0, bottomtitle=1mm, toptitle=1mm, titlerule=0mm, opacitybacktitle=0.6, rightrule=.15mm, bottomrule=.15mm, colframe=quarto-callout-note-color-frame, leftrule=.75mm, arc=.35mm, toprule=.15mm]
+
+La norma nuclear juega un papel análogo a la norma \(\ell_1\) en
+(Ecuación~\ref{eq-lasso}):
+
+\begin{itemize}
+\tightlist
+\item
+  La norma \(\ell_1\) favorece vectores dispersos
+\item
+  La norma nuclear favorece matrices de bajo rango
+\end{itemize}
+
+\end{tcolorbox}
+
+Aunque la norma nuclear es una función no suave algo compleja, es al
+menos convexa, por lo que la formulación
+(Ecuación~\ref{eq-nuclear-norm}) también es convexa.
+
+Esta formulación puede demostrarse que produce una solución
+estadísticamente válida cuando:
+
+\begin{itemize}
+\tightlist
+\item
+  La verdadera \(X\) es de bajo rango
+\item
+  Las matrices de observación \(A_j\) satisfacen una ``propiedad de
+  isometría restringida'' (comúnmente satisfecha por matrices aleatorias
+  pero no por matrices con solo un elemento no nulo)
+\end{itemize}
+
+La formulación también es válida en un contexto diferente, en el que:
+
+\begin{itemize}
+\tightlist
+\item
+  La verdadera \(X\) es incoherente (hablando aproximadamente, no tiene
+  unos pocos elementos que sean mucho más grandes que los otros)
+\item
+  Las observaciones \(A_j\) son de elementos individuales
+\end{itemize}
+
+\subsection{Representación
+Factorizada}\label{representaciuxf3n-factorizada}
+
+En otra forma de regularización, la matriz \(X\) se representa
+explícitamente como un producto de dos matrices ``delgadas'' \(L\) y
+\(R\), donde \(L \in \mathbb{R}^{n \times r}\) y
+\(R \in \mathbb{R}^{p \times r}\), con \(r \ll \min(n,p)\). Establecemos
+\(X = LR^T\) en (Ecuación~\ref{eq-matrix-sensing}) y resolvemos:
+
+\begin{equation}\phantomsection\label{eq-matrix-factorization}{\min_{L,R} \frac{1}{2m} \sum_{j=1}^{m} (\langle A_j, LR^T \rangle - y_j)^2}\end{equation}
+
+En esta formulación:
+
+\begin{itemize}
+\tightlist
+\item
+  El rango \(r\) está ``cableado'' en la definición de \(X\), por lo que
+  no hay necesidad de incluir un término de regularización
+\item
+  Esta formulación es típicamente mucho más compacta que
+  (Ecuación~\ref{eq-nuclear-norm}); el número total de elementos en
+  \((L,R)\) es \((n + p)r\), que es mucho menor que \(np\)
+\item
+  Sin embargo, esta función es \textbf{no convexa} cuando se considera
+  como una función de \((L,R)\) conjuntamente
+\end{itemize}
+
+\begin{tcolorbox}[enhanced jigsaw, title=\textcolor{quarto-callout-important-color}{\faExclamation}\hspace{0.5em}{\textbf{No Convexidad Benigna}}, colbacktitle=quarto-callout-important-color!10!white, coltitle=black, breakable, colback=white, left=2mm, opacityback=0, bottomtitle=1mm, toptitle=1mm, titlerule=0mm, opacitybacktitle=0.6, rightrule=.15mm, bottomrule=.15mm, colframe=quarto-callout-important-color-frame, leftrule=.75mm, arc=.35mm, toprule=.15mm]
+
+Una línea activa de investigación actual muestra que la no convexidad es
+benigna en muchas situaciones y que, bajo ciertas suposiciones sobre los
+datos \((A_j,y_j)\), \(j = 1,2, \ldots, m\) y una cuidadosa elección de
+estrategia algorítmica, se pueden obtener buenas soluciones de la
+formulación (Ecuación~\ref{eq-matrix-factorization}).
+
+\end{tcolorbox}
+
+Una pista sobre este buen comportamiento es que aunque esta formulación
+es no convexa, en cierto sentido es una aproximación a un problema
+tratable: Si tenemos una observación completa de \(X\), entonces una
+aproximación de rango-\(r\) puede encontrarse realizando una
+descomposición de valores singulares de \(X\) y definiendo \(L\) y \(R\)
+en términos de los \(r\) principales vectores singulares izquierdos y
+derechos.
+
+\subsection{Factorización de Matrices No
+Negativas}\label{factorizaciuxf3n-de-matrices-no-negativas}
+
+Algunas aplicaciones en visión por computadora, quimiometría y
+agrupamiento de documentos requieren que encontremos factores \(L\) y
+\(R\) como aquellos en (Ecuación~\ref{eq-matrix-factorization}) en los
+que todos los elementos son no negativos. Si se observa la matriz
+completa \(Y \in \mathbb{R}^{n \times p}\), este problema tiene la
+forma:
+
+\begin{equation}\phantomsection\label{eq-nmf}{\min_{L,R} \|LR^T - Y\|_F^2 \quad \text{sujeto a } L \geq 0, \; R \geq 0}\end{equation}
+
+y se llama \textbf{factorización de matrices no negativas}.
+
+\section{Máquinas de Vectores de Soporte}\label{sec-svm}
+
+\begin{tcolorbox}[enhanced jigsaw, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{\textbf{Problema Clásico de ML}}, colbacktitle=quarto-callout-note-color!10!white, coltitle=black, breakable, colback=white, left=2mm, opacityback=0, bottomtitle=1mm, toptitle=1mm, titlerule=0mm, opacitybacktitle=0.6, rightrule=.15mm, bottomrule=.15mm, colframe=quarto-callout-note-color-frame, leftrule=.75mm, arc=.35mm, toprule=.15mm]
+
+\textbf{La clasificación mediante Máquinas de Vectores de Soporte (SVM)}
+es un problema de optimización clásico en aprendizaje automático, que
+remonta sus orígenes a la \textbf{década de 1960}.
+
+\end{tcolorbox}
+
+Dados los datos de entrada \((a_j,y_j)\) con \(a_j \in \mathbb{R}^n\) e
+\(y_j \in \{-1,1\}\), SVM busca un vector \(x \in \mathbb{R}^n\) y un
+escalar \(\beta \in \mathbb{R}\) tales que:
+
+\begin{equation}\phantomsection\label{eq-svm-positive}{a_j^T x - \beta \geq 1 \quad \text{cuando } y_j = +1}\end{equation}
+
+\begin{equation}\phantomsection\label{eq-svm-negative}{a_j^T x - \beta \leq -1 \quad \text{cuando } y_j = -1}\end{equation}
+
+Cualquier par \((x,\beta)\) que satisfaga estas condiciones define un
+\textbf{hiperplano separador} en \(\mathbb{R}^n\), que separa los casos
+``positivos'' \(\{a_j \mid y_j = +1\}\) de los casos ``negativos''
+\(\{a_j \mid y_j = -1\}\).
+
+Entre todos los hiperplanos separadores, el que minimiza \(\|x\|_2\) es
+el que \textbf{maximiza el margen} entre las dos clases -- es decir, el
+hiperplano cuya distancia al punto \(a_j\) más cercano de cualquier
+clase es mayor.
+
+\subsection{Formulación de Pérdida
+Bisagra}\label{formulaciuxf3n-de-puxe9rdida-bisagra}
+
+Podemos formular el problema de encontrar un hiperplano separador como
+un problema de optimización definiendo un objetivo con la forma de suma
+(Ecuación~\ref{eq-finite-sum-formulation}):
+
+\begin{equation}\phantomsection\label{eq-hinge-loss}{H(x,\beta) = \frac{1}{m} \sum_{j=1}^{m} \max(1 - y_j(a_j^T x - \beta), 0)}\end{equation}
+
+Nótese que el término \(j\)-ésimo en esta suma es cero si se satisfacen
+las condiciones
+(Ecuación~\ref{eq-svm-positive})--(Ecuación~\ref{eq-svm-negative}), y es
+positivo en caso contrario. Incluso si no existe ningún par
+\((x,\beta)\) para el cual \(H(x,\beta) = 0\), un valor \((x,\beta)\)
+que minimice (Ecuación~\ref{eq-hinge-loss}) será el que más se acerque a
+satisfacer las condiciones en algún sentido.
+
+A menudo se agrega un término \(\frac{1}{2\lambda}\|x\|_2^2\) (para
+algún parámetro \(\lambda > 0\)) a (Ecuación~\ref{eq-hinge-loss}),
+produciendo la siguiente versión regularizada:
+
+\begin{equation}\phantomsection\label{eq-svm-regularized}{H(x,\beta) = \frac{1}{m} \sum_{j=1}^{m} \max(1 - y_j(a_j^T x - \beta), 0) + \frac{1}{2\lambda}\|x\|_2^2}\end{equation}
+
+\begin{tcolorbox}[enhanced jigsaw, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{\textbf{Pérdida vs Regularizador}}, colbacktitle=quarto-callout-note-color!10!white, coltitle=black, breakable, colback=white, left=2mm, opacityback=0, bottomtitle=1mm, toptitle=1mm, titlerule=0mm, opacitybacktitle=0.6, rightrule=.15mm, bottomrule=.15mm, colframe=quarto-callout-note-color-frame, leftrule=.75mm, arc=.35mm, toprule=.15mm]
+
+En contraste con los ejemplos presentados hasta ahora, el problema SVM
+tiene una \textbf{función de pérdida no suave} y un
+\textbf{regularizador suave}.
+
+\end{tcolorbox}
+
+Si \(\lambda\) es suficientemente pequeño, y si existen hiperplanos
+separadores, el par \((x,\beta)\) que minimiza
+(Ecuación~\ref{eq-svm-regularized}) es el hiperplano separador de margen
+máximo. La propiedad de margen máximo es consistente con los objetivos
+de generalizabilidad y robustez.
+
+Por ejemplo, si los datos observados \((a_j,y_j)\) se extraen de una
+``nube'' subyacente de casos positivos y negativos, la solución de
+margen máximo generalmente hace un trabajo razonable al separar otras
+muestras de datos empíricos extraídas de las mismas nubes, mientras que
+un hiperplano que pasa cerca de varios de los puntos de datos observados
+puede no funcionar tan bien.
+
+\subsection{Métodos de Kernel}\label{muxe9todos-de-kernel}
+
+A menudo, no es posible encontrar un hiperplano que separe los casos
+positivos y negativos lo suficientemente bien como para ser útil como
+clasificador. Una solución es transformar todos los vectores de datos
+brutos \(a_j\) mediante algún mapeo no lineal \(\psi\) y luego realizar
+la clasificación de máquina de vectores de soporte en los vectores
+\(\psi(a_j)\), \(j = 1,2, \ldots, m\). Las condiciones
+(Ecuación~\ref{eq-svm-positive})--(Ecuación~\ref{eq-svm-negative})
+serían así reemplazadas por:
+
+\begin{equation}\phantomsection\label{eq-svm-kernel-positive}{\psi(a_j)^T x - \beta \geq 1 \quad \text{cuando } y_j = +1}\end{equation}
+
+\begin{equation}\phantomsection\label{eq-svm-kernel-negative}{\psi(a_j)^T x - \beta \leq -1 \quad \text{cuando } y_j = -1}\end{equation}
+
+conduciendo al siguiente análogo de (Ecuación~\ref{eq-svm-regularized}):
+
+\begin{equation}\phantomsection\label{eq-svm-kernel}{H(x,\beta) = \frac{1}{m} \sum_{j=1}^{m} \max(1 - y_j(\psi(a_j)^T x - \beta), 0) + \frac{1}{2\lambda}\|x\|_2^2}\end{equation}
+
+Cuando se transforma de vuelta a \(\mathbb{R}^m\), la superficie
+\(\{a \mid \psi(a)^T x - \beta = 0\}\) es no lineal y posiblemente
+desconectada, y a menudo es un clasificador mucho más poderoso que los
+hiperplanos resultantes de (Ecuación~\ref{eq-svm-regularized}).
+
+\subsection{Formulación Dual}\label{formulaciuxf3n-dual}
+
+Notamos que SVM también puede expresarse naturalmente como un problema
+de minimización sobre un conjunto convexo. Al introducir variables
+artificiales, el problema (Ecuación~\ref{eq-svm-kernel}) (y
+(Ecuación~\ref{eq-svm-regularized})) puede formularse como un programa
+cuadrático convexo -- es decir, un problema con un objetivo cuadrático
+convexo y restricciones lineales.
+
+Al tomar el dual de este problema, obtenemos otro programa cuadrático
+convexo, en \(m\) variables:
+
+\begin{equation}\phantomsection\label{eq-svm-dual}{\begin{aligned}
+\min_{\alpha \in \mathbb{R}^m} \quad & \frac{1}{2}\alpha^T Q\alpha - \mathbf{1}^T \alpha \\
+\text{sujeto a} \quad & 0 \leq \alpha \leq \frac{1}{\lambda}\mathbf{1}, \quad y^T \alpha = 0
+\end{aligned}}\end{equation}
+
+donde:
+
+\begin{itemize}
+\tightlist
+\item
+  \(Q_{kl} = y_k y_l \psi(a_k)^T \psi(a_l)\)
+\item
+  \(y = (y_1, y_2, \ldots, y_m)^T\)\\
+\item
+  \(\mathbf{1} = (1, 1, \ldots, 1)^T\)
+\end{itemize}
+
+\begin{tcolorbox}[enhanced jigsaw, title=\textcolor{quarto-callout-important-color}{\faExclamation}\hspace{0.5em}{\textbf{El Truco del Kernel}}, colbacktitle=quarto-callout-important-color!10!white, coltitle=black, breakable, colback=white, left=2mm, opacityback=0, bottomtitle=1mm, toptitle=1mm, titlerule=0mm, opacitybacktitle=0.6, rightrule=.15mm, bottomrule=.15mm, colframe=quarto-callout-important-color-frame, leftrule=.75mm, arc=.35mm, toprule=.15mm]
+
+Curiosamente, el problema (Ecuación~\ref{eq-svm-dual}) puede formularse
+y resolverse sin conocimiento o definición explícita del mapeo \(\psi\).
+Solo necesitamos una técnica para definir los elementos de \(Q\). Esto
+se puede hacer con el uso de una \textbf{función kernel}
+\(K : \mathbb{R}^n \times \mathbb{R}^n \to \mathbb{R}\), donde
+\(K(a_k,a_l)\) reemplaza \(\psi(a_k)^T \psi(a_l)\). Este es el llamado
+\textbf{truco del kernel}.
+
+\end{tcolorbox}
+
+La función kernel \(K\) también puede usarse para construir una función
+de clasificación \(\phi\) a partir de la solución de
+(Ecuación~\ref{eq-svm-dual}). Una elección particularmente popular de
+kernel es el \textbf{kernel Gaussiano}:
+
+\begin{equation}\phantomsection\label{eq-gaussian-kernel}{K(a_k,a_l) := \exp\left(-\frac{1}{2\sigma^2} \|a_k - a_l\|_2^2\right)}\end{equation}
+
+donde \(\sigma\) es un parámetro positivo.
+
+\section{Regresión Logística}\label{sec-logistic-regression}
+
+La regresión logística puede verse como una forma suavizada de
+clasificación binaria de máquina de vectores de soporte en la que, en
+lugar de que la función de clasificación \(\phi\) dé una predicción sin
+calificar de la clase en la que se encuentra un nuevo vector de datos
+\(a\), devuelve una estimación de las \textbf{probabilidades} de que
+\(a\) pertenezca a una clase u otra.
+
+Buscamos una ``función de probabilidades'' \(p\) parametrizada por un
+vector \(x \in \mathbb{R}^n\):
+
+\begin{equation}\phantomsection\label{eq-logistic-function}{p(a;x) := (1 + \exp(a^T x))^{-1}}\end{equation}
+
+y buscamos elegir el parámetro \(x\) de modo que:
+
+\begin{itemize}
+\tightlist
+\item
+  \(p(a_j;x) \approx 1\) cuando \(y_j = +1\)
+\item
+  \(p(a_j;x) \approx 0\) cuando \(y_j = -1\)
+\end{itemize}
+
+Nótese la similitud con
+(Ecuación~\ref{eq-svm-positive})--(Ecuación~\ref{eq-svm-negative}).
+
+\subsection{Logaritmo Negativo de
+Verosimilitud}\label{logaritmo-negativo-de-verosimilitud}
+
+El valor óptimo de \(x\) puede encontrarse minimizando una
+\textbf{función de logaritmo negativo de verosimilitud}:
+
+\begin{equation}\phantomsection\label{eq-logistic-nll}{L(x) := -\frac{1}{m} \left[ \sum_{j:y_j=-1} \log(1 - p(a_j;x)) + \sum_{j:y_j=1} \log p(a_j;x) \right]}\end{equation}
+
+Nótese que la definición (Ecuación~\ref{eq-logistic-function}) asegura
+que \(p(a;x) \in (0,1)\) para todos \(a\) y \(x\); por lo tanto,
+\(\log(1 - p(a_j;x)) < 0\) y \(\log p(a_j;x) < 0\) para todos \(j\) y
+todos \(x\). Cuando se satisfacen las condiciones anteriores, estos
+términos logarítmicos serán solo ligeramente negativos, por lo que los
+valores de \(x\) que los satisfacen estarán cerca del óptimo.
+
+\subsection{Selección de Características con
+LASSO}\label{selecciuxf3n-de-caracteruxedsticas-con-lasso}
+
+Podemos realizar selección de características usando el modelo
+(Ecuación~\ref{eq-logistic-nll}) introduciendo un regularizador
+\(\lambda \|x\|_1\) (como en la técnica LASSO para mínimos cuadrados):
+
+\begin{equation}\phantomsection\label{eq-logistic-lasso}{\min_x -\frac{1}{m} \left[ \sum_{j:y_j=-1} \log(1 - p(a_j;x)) + \sum_{j:y_j=1} \log p(a_j;x) \right] + \lambda\|x\|_1}\end{equation}
+
+donde \(\lambda > 0\) es un parámetro de regularización. Este término
+tiene el efecto de producir una solución en la que pocos componentes de
+\(x\) son no nulos, haciendo posible evaluar \(p(a;x)\) conociendo solo
+aquellos componentes de \(a\) que corresponden a los no nulos en \(x\).
+
+\subsection{Regresión Logística
+Multiclase}\label{regresiuxf3n-loguxedstica-multiclase}
+
+Una extensión importante de esta técnica es a la \textbf{regresión
+logística multiclase (o multinomial)}, en la que los vectores de datos
+\(a_j\) pertenecen a más de dos clases. Tales aplicaciones son comunes
+en el análisis de datos moderno.
+
+\begin{tcolorbox}[enhanced jigsaw, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{\textbf{Ejemplo: Reconocimiento de Voz}}, colbacktitle=quarto-callout-tip-color!10!white, coltitle=black, breakable, colback=white, left=2mm, opacityback=0, bottomtitle=1mm, toptitle=1mm, titlerule=0mm, opacitybacktitle=0.6, rightrule=.15mm, bottomrule=.15mm, colframe=quarto-callout-tip-color-frame, leftrule=.75mm, arc=.35mm, toprule=.15mm]
+
+En un sistema de reconocimiento de voz, las \(M\) clases podrían
+representar cada una un fonema del habla, uno de los potencialmente
+miles de sonidos elementales distintos que pueden ser pronunciados por
+humanos en unas pocas decenas de milisegundos.
+
+\end{tcolorbox}
+
+Un problema de regresión logística multinomial requiere una función de
+probabilidades distinta \(p_k\) para cada clase
+\(k \in \{1,2, \ldots, M\}\). Estas funciones se parametrizan mediante
+vectores \(x^{[k]} \in \mathbb{R}^n\), \(k = 1,2, \ldots, M\), definidos
+como sigue:
+
+\begin{equation}\phantomsection\label{eq-softmax}{p_k(a;X) := \frac{\exp(a^T x^{[k]})}{\sum_{l=1}^{M} \exp(a^T x^{[l]})}, \quad k = 1,2, \ldots, M}\end{equation}
+
+donde definimos \(X := \{x^{[k]} \mid k = 1,2, \ldots, M\}\).
+
+Como en el caso binario, tenemos \(p_k(a) \in (0,1)\) para todos \(a\) y
+todos \(k = 1,2, \ldots, M\) y, además, que
+\(\sum_{k=1}^{M} p_k(a) = 1\). Las funciones (Ecuación~\ref{eq-softmax})
+realizan un \textbf{``softmax''} en las cantidades
+\(\{a^T x^{[l]} \mid l = 1,2, \ldots, M\}\).
+
+En el contexto de la regresión logística multiclase, las etiquetas
+\(y_j\) son vectores en \(\mathbb{R}^M\) cuyos elementos se definen como
+sigue:
+
+\begin{equation}\phantomsection\label{eq-one-hot}{y_{jk} = \begin{cases}
+1 & \text{cuando } a_j \text{ pertenece a la clase } k, \\
+0 & \text{en caso contrario.}
+\end{cases}}\end{equation}
+
+De manera similar al caso binario, buscamos definir los vectores
+\(x^{[k]}\) de modo que:
+
+\begin{itemize}
+\tightlist
+\item
+  \(p_k(a_j;X) \approx 1\) cuando \(y_{jk} = 1\)
+\item
+  \(p_k(a_j;X) \approx 0\) cuando \(y_{jk} = 0\)
+\end{itemize}
+
+El problema de encontrar valores de \(x^{[k]}\) que satisfagan estas
+condiciones puede formularse nuevamente como uno de minimizar un
+logaritmo negativo de verosimilitud:
+
+\begin{equation}\phantomsection\label{eq-multiclass-nll}{L(X) := -\frac{1}{m} \sum_{j=1}^{m} \left[ \sum_{\ell=1}^{M} y_{j\ell}(x^{[\ell]T}a_j) - \log \left( \sum_{\ell=1}^{M} \exp(x^{[\ell]T}a_j) \right) \right]}\end{equation}
+
+Se pueden incluir términos de regularización de ``dispersión grupal'' en
+esta formulación para seleccionar un conjunto de características en los
+vectores \(a_j\), común a cada clase, que distingan efectivamente entre
+las clases.
+
+\section{Aprendizaje Profundo}\label{sec-deep-learning}
+
+Las redes neuronales profundas a menudo están diseñadas para realizar la
+misma función que la regresión logística multiclase -- es decir,
+clasificar un vector de datos \(a\) en una de \(M\) clases posibles, a
+menudo para \(M\) grande. La innovación principal es que el mapeo
+\(\phi\) del vector de datos a la predicción es ahora una
+\textbf{función no lineal}, parametrizada explícitamente por un conjunto
+de transformaciones estructuradas.
+
+\subsection{Estructura de la Red
+Neuronal}\label{estructura-de-la-red-neuronal}
+
+La red neuronal mostrada en forma conceptual ilustra la estructura de
+una red neuronal particular. En esta estructura:
+
+\begin{itemize}
+\tightlist
+\item
+  El vector de datos \(a_j\) entra por la izquierda de la red
+\item
+  Cada caja (más a menudo referida como una ``capa'') representa una
+  transformación que toma un vector de entrada y aplica una
+  transformación no lineal de los datos para producir un vector de
+  salida
+\item
+  La salida de cada operador se convierte en la entrada para una o más
+  capas subsiguientes
+\item
+  Cada capa tiene su propio conjunto de parámetros, y la colección de
+  todos los parámetros sobre todas las capas comprende nuestra variable
+  de optimización
+\item
+  Los diferentes tipos de transformaciones pueden diferir entre capas,
+  pero podemos componerlas de la manera que se adapte a nuestra
+  aplicación
+\end{itemize}
+
+\subsection{Transformaciones de Capa}\label{transformaciones-de-capa}
+
+Una transformación típica, que convierte el vector \(a_j^{l-1}\) que
+representa la salida de la capa \(l-1\) al vector \(a_j^l\) que
+representa la salida de la capa \(l\), es:
+
+\begin{equation}\phantomsection\label{eq-layer-transform}{a_j^l = \sigma(W^l a_j^{l-1} + g^l)}\end{equation}
+
+donde:
+
+\begin{itemize}
+\tightlist
+\item
+  \(W^l\) es una matriz de dimensión \(|a_j^l| \times |a_j^{l-1}|\)
+\item
+  \(g^l\) es un vector de longitud \(|a_j^l|\)
+\item
+  \(\sigma\) es una transformación no lineal componente a componente,
+  usualmente llamada \textbf{función de activación}
+\end{itemize}
+
+Las formas más comunes de la función de activación \(\sigma\) actúan
+independientemente en cada componente de su vector de argumento como
+sigue:
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Sigmoide}: \(t \to 1/(1 + e^{-t})\)
+\item
+  \textbf{Unidad Lineal Rectificada (ReLU)}: \(t \to \max(t,0)\)
+\end{itemize}
+
+Se necesitan transformaciones alternativas cuando la entrada a la caja
+\(l\) proviene de dos o más cajas precedentes.
+
+\subsection{Capa de Salida y Función de
+Pérdida}\label{capa-de-salida-y-funciuxf3n-de-puxe9rdida}
+
+La capa más a la derecha de la red neuronal (la \textbf{capa de salida})
+típicamente tiene \(M\) salidas, una para cada una de las posibles
+clases a las que la entrada (\(a_j\), digamos) podría pertenecer. Estas
+se comparan con las etiquetas \(y_{jk}\), definidas como en
+(Ecuación~\ref{eq-one-hot}) para indicar a cuál de las \(M\) clases
+pertenece \(a_j\). A menudo, se aplica un softmax a las salidas en la
+capa más a la derecha, y se obtiene una función de pérdida similar a
+(Ecuación~\ref{eq-multiclass-nll}).
+
+\subsection{Problema de Optimización en Aprendizaje
+Profundo}\label{problema-de-optimizaciuxf3n-en-aprendizaje-profundo}
+
+Consideremos el caso especial (pero no infrecuente) en el que la
+estructura de la red neuronal es un grafo lineal de \(D\) niveles, en el
+que la salida de la capa \(l-1\) se convierte en la entrada de la capa
+\(l\) (para \(l = 1,2, \ldots, D\)) con \(a_j = a_j^0\),
+\(j = 1,2, \ldots, m\), y la transformación dentro de cada caja tiene la
+forma (Ecuación~\ref{eq-layer-transform}). Se aplica un softmax a la
+salida de la capa más a la derecha para obtener un conjunto de
+probabilidades.
+
+Los parámetros en esta red neuronal son los pares matriz-vector
+\((W^l,g^l)\), \(l = 1,2, \ldots, D\) que transforman el vector de
+entrada \(a_j = a_j^0\) en la salida \(a_j^D\) de la capa final.
+Buscamos elegir todos estos parámetros de modo que la red haga un buen
+trabajo al clasificar correctamente los datos de entrenamiento.
+
+Usando la notación \(w\) para las transformaciones capa a capa, es
+decir:
+
+\[w := (W^1,g^1,W^2,g^2, \ldots, W^D,g^D)\]
+
+podemos escribir la función de pérdida para aprendizaje profundo como:
+
+\begin{equation}\phantomsection\label{eq-deep-learning-loss}{L(w) = -\frac{1}{m} \sum_{j=1}^{m} \left[ \sum_{\ell=1}^{M} y_{j\ell} a_{j,\ell}^D(w) - \log \left( \sum_{\ell=1}^{M} \exp a_{j,\ell}^D(w) \right) \right]}\end{equation}
+
+donde \(a_{j,\ell}^D(w) \in \mathbb{R}\) es la salida del elemento
+\(\ell\)-ésimo en la capa \(D\) correspondiente al vector de entrada
+\(a_j^0\). (Aquí escribimos \(a_{j,\ell}^D(w)\) para hacer explícita la
+dependencia de las transformaciones \(w\) así como del vector de entrada
+\(a_j\).)
+
+Podemos ver la regresión logística multiclase como un caso especial de
+aprendizaje profundo con \(D = 1\), de modo que
+\(a_{j,\ell}^1 = W_{\ell,\cdot}^1 a_j^0\), donde \(W_{\ell,\cdot}^1\)
+denota la fila \(\ell\) de la matriz \(W^1\).
+
+\subsection{Variantes e Ingeniería}\label{variantes-e-ingenieruxeda}
+
+Las redes neuronales en uso para aplicaciones particulares (por ejemplo,
+en reconocimiento de imagen y reconocimiento de voz, donde han tenido
+bastante éxito) incluyen muchas variantes del diseño básico. Estas
+incluyen:
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Conectividad restringida} entre las cajas (que corresponde a
+  imponer estructura de dispersión en las matrices \(W^l\),
+  \(l = 1,2, \ldots, D\))
+\item
+  \textbf{Compartir parámetros}, que corresponde a forzar subconjuntos
+  de los elementos de \(W^l\) a tomar el mismo valor
+\item
+  \textbf{Arreglos complejos} de las cajas, con salidas provenientes de
+  varias capas, conexiones a través de capas no adyacentes, diferentes
+  transformaciones componente a componente \(\sigma\) en diferentes
+  capas, y así sucesivamente
+\end{itemize}
+
+Las redes neuronales profundas para aplicaciones prácticas son objetos
+altamente diseñados.
+
+\subsection{Características Distintivas del Aprendizaje
+Profundo}\label{caracteruxedsticas-distintivas-del-aprendizaje-profundo}
+
+La función de pérdida (Ecuación~\ref{eq-deep-learning-loss}) comparte
+con muchas otras aplicaciones la forma de suma finita
+(Ecuación~\ref{eq-finite-sum-formulation}), pero tiene varias
+características que la distinguen de las otras aplicaciones discutidas
+anteriormente:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \textbf{No Convexidad}: Lo más importante, es no convexa en los
+  parámetros \(w\)
+\item
+  \textbf{Gran Escala}: El número total de parámetros en \(w\) es
+  usualmente muy grande
+\end{enumerate}
+
+El entrenamiento efectivo de clasificadores de aprendizaje profundo
+típicamente requiere una gran cantidad de datos y poder de cómputo.
+Enormes clústeres de computadoras potentes -- a menudo usando
+procesadores multinúcleo, GPUs, e incluso unidades de procesamiento
+especialmente arquitecturadas -- se dedican a esta tarea.
+
+\section{Énfasis}\label{sec-emphasis}
+
+Muchos problemas pueden formularse como en el marco
+(Ecuación~\ref{eq-regularized-optimization}), y sus propiedades pueden
+diferir significativamente. Podrían ser convexos o no convexos, y suaves
+o no suaves. Pero hay características importantes que todos comparten:
+
+\begin{tcolorbox}[enhanced jigsaw, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{\textbf{Características Compartidas de los Problemas de Optimización}}, colbacktitle=quarto-callout-note-color!10!white, coltitle=black, breakable, colback=white, left=2mm, opacityback=0, bottomtitle=1mm, toptitle=1mm, titlerule=0mm, opacitybacktitle=0.6, rightrule=.15mm, bottomrule=.15mm, colframe=quarto-callout-note-color-frame, leftrule=.75mm, arc=.35mm, toprule=.15mm]
+
+\begin{itemize}
+\tightlist
+\item
+  Pueden formularse como \textbf{funciones de variables reales}, que
+  típicamente organizamos en un vector de longitud \(n\)
+\item
+  Las funciones son \textbf{continuas}. Cuando aparece no suavidad en la
+  formulación, lo hace de manera estructurada que puede ser explotada
+  por el algoritmo
+\item
+  Las \textbf{propiedades de suavidad} permiten a un algoritmo hacer
+  buenas inferencias sobre el comportamiento de la función basándose en
+  el conocimiento obtenido en puntos cercanos que han sido visitados
+  previamente
+\item
+  El objetivo a menudo se compone en parte de una \textbf{suma de muchos
+  términos}, donde cada término depende de un único elemento de datos
+\item
+  El objetivo es a menudo una \textbf{suma de dos términos}: un
+  ``término de pérdida'' (a veces surgiendo de una expresión de máxima
+  verosimilitud para algún modelo estadístico) y un ``término de
+  regularización'' cuyo propósito es imponer estructura y
+  ``generalizabilidad'' en el modelo recuperado
+\end{itemize}
+
+\end{tcolorbox}
+
+\subsection{Énfasis del Tratamiento}\label{uxe9nfasis-del-tratamiento}
+
+Nuestro tratamiento enfatiza \textbf{algoritmos} para resolver estos
+diversos tipos de problemas, con análisis de las propiedades de
+convergencia de estos algoritmos. Prestamos atención a las
+\textbf{garantías de complejidad}, que son límites en la cantidad de
+esfuerzo computacional requerido para obtener soluciones de una
+precisión dada. Estos límites usualmente dependen de propiedades
+fundamentales de la función objetivo y los datos que la definen,
+incluyendo:
+
+\begin{itemize}
+\tightlist
+\item
+  Las dimensiones del conjunto de datos
+\item
+  El número de variables en el problema
+\end{itemize}
+
+Este énfasis contrasta con gran parte de la literatura de optimización,
+en la que los resultados de convergencia global usualmente no involucran
+límites de complejidad. (Una excepción notable es el análisis de métodos
+de punto interior.)
+
+\subsection{Preocupaciones Prácticas}\label{preocupaciones-pruxe1cticas}
+
+Al mismo tiempo, tratamos en la medida de lo posible de enfatizar las
+\textbf{preocupaciones prácticas} asociadas con la resolución de estos
+problemas. Hay una variedad de compromisos presentados por cualquier
+problema, y el optimizador tiene que evaluar qué herramientas son más
+apropiadas para usar. Además de la formulación del problema, es
+imperativo tener en cuenta:
+
+\begin{itemize}
+\tightlist
+\item
+  El \textbf{presupuesto de tiempo} para la tarea en cuestión
+\item
+  El \textbf{tipo de computadora} en la que se resolverá el problema
+\item
+  Las \textbf{garantías necesarias} para la solución
+\end{itemize}
+
+\part{Resumen y Referencias}
+
+\chapter{Summary}\label{summary}
+
+In summary, this book has no content whatsoever.
+
+\chapter*{References}\label{references}
+\addcontentsline{toc}{chapter}{References}
+
+\markboth{References}{References}
+
+\phantomsection\label{refs}
+\begin{CSLReferences}{1}{0}
+\bibitem[\citeproctext]{ref-knuth84}
+Knuth, Donald E. 1984. {«Literate Programming»}. \emph{Comput. J.} 27
+(2): 97-111. \url{https://doi.org/10.1093/comjnl/27.2.97}.
+
+\end{CSLReferences}
+
+
+
+
+\end{document}
