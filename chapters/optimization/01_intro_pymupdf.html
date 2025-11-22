@@ -1,14 +1,16 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 
-<meta charset="utf-8">
-<meta name="generator" content="quarto-1.8.26">
+<head>
 
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<meta charset="utf-8" />
+<meta name="generator" content="quarto-1.8.26" />
 
-<meta name="author" content="PDF Conversion Tool">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
 
-<title>Introduction to Optimization - PyMuPDF Version</title>
+<meta name="author" content="PDF Conversion Tool" />
+
+<title>Introduction to Optimization - PyMuPDF Version – Data Analysis Collection</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -23,19 +25,34 @@ ul.task-list li input[type="checkbox"] {
 }
 </style>
 
-
-<script src="01_intro_pymupdf_files/libs/clipboard/clipboard.min.js"></script>
-<script src="01_intro_pymupdf_files/libs/quarto-html/quarto.js" type="module"></script>
-<script src="01_intro_pymupdf_files/libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="01_intro_pymupdf_files/libs/quarto-html/axe/axe-check.js" type="module"></script>
-<script src="01_intro_pymupdf_files/libs/quarto-html/popper.min.js"></script>
-<script src="01_intro_pymupdf_files/libs/quarto-html/tippy.umd.min.js"></script>
-<script src="01_intro_pymupdf_files/libs/quarto-html/anchor.min.js"></script>
-<link href="01_intro_pymupdf_files/libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="01_intro_pymupdf_files/libs/quarto-html/quarto-syntax-highlighting-587c61ba64f3a5504c4d52d930310e48.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="01_intro_pymupdf_files/libs/bootstrap/bootstrap.min.js"></script>
-<link href="01_intro_pymupdf_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="01_intro_pymupdf_files/libs/bootstrap/bootstrap-4d7f0bce1131f3e5f9547cd857cfbfc8.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<!-- htmldependencies:E3FAD763 -->
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
@@ -69,21 +86,48 @@ window.Quarto = {
 
 </head>
 
-<body class="quarto-light">
+<body>
 
-<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
-<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-  <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">Table of contents</h2>
-   
-  <ul>
-  <li><a href="#sec-this-formulation-performs" id="toc-sec-this-formulation-performs" class="nav-link active" data-scroll-target="#sec-this-formulation-performs"><span class="header-section-number">1</span> This formulation performs</a></li>
-  <li><a href="#qkl-ykylψakt-ψal-sec-qkl--ykylψakt-ψal" id="toc-qkl-ykylψakt-ψal-sec-qkl--ykylψakt-ψal" class="nav-link" data-scroll-target="#qkl-ykylψakt-ψal-sec-qkl--ykylψakt-ψal"><span class="header-section-number">2</span> Qkl = ykylψ(ak)T ψ(al), {#sec-qkl-=-ykylψ(ak)t-ψ(al),}</a></li>
-  <li><a href="#kakal-exp-sec-kakal--exp" id="toc-kakal-exp-sec-kakal--exp" class="nav-link" data-scroll-target="#kakal-exp-sec-kakal--exp"><span class="header-section-number">3</span> K(ak,al) := exp {#sec-k(ak,al)-:=-exp}</a></li>
-  <li><a href="#sec-rm-whose-elements-are-deﬁned-as-follows:" id="toc-sec-rm-whose-elements-are-deﬁned-as-follows:" class="nav-link" data-scroll-target="#sec-rm-whose-elements-are-deﬁned-as-follows\:"><span class="header-section-number">4</span> RM whose elements are deﬁned as follows:</a></li>
-  </ul>
-<div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="..\..\01_intro_pymupdf.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li></ul></div></nav>
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="/index.html">
+    <span class="navbar-title">Data Analysis Collection</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
+  aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation"
+  onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="/en/index.html"> 
+<span class="menu-text">English</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="/es/index.html"> 
+<span class="menu-text">Español</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
 </div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <div id="quarto-toc-target"></div>
+    </div>
+<!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
@@ -117,11 +161,20 @@ window.Quarto = {
 
 </header>
 
-
+<nav id="TOC" role="doc-toc">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#sec-this-formulation-performs" id="toc-sec-this-formulation-performs"><span class="header-section-number">1</span> This formulation performs</a></li>
+  <li><a href="#qkl-ykylψakt-ψal-sec-qkl--ykylψakt-ψal" id="toc-qkl-ykylψakt-ψal-sec-qkl--ykylψakt-ψal"><span class="header-section-number">2</span> Qkl = ykylψ(ak)T ψ(al), {#sec-qkl-=-ykylψ(ak)t-ψ(al),}</a></li>
+  <li><a href="#kakal-exp-sec-kakal--exp" id="toc-kakal-exp-sec-kakal--exp"><span class="header-section-number">3</span> K(ak,al) := exp {#sec-k(ak,al)-:=-exp}</a></li>
+  <li><a href="#sec-rm-whose-elements-are-deﬁned-as-follows:" id="toc-sec-rm-whose-elements-are-deﬁned-as-follows:"><span class="header-section-number">4</span> RM whose elements are deﬁned as follows:</a></li>
+  </ul>
+</nav>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
-<i class="callout-icon"></i>
+<i class='callout-icon'></i>
 </div>
 <div class="callout-title-container flex-fill">
 <span class="screen-reader-only">Note</span><strong>Conversion Information</strong>
@@ -129,7 +182,7 @@ window.Quarto = {
 </div>
 <div class="callout-body-container callout-body">
 <p>This document was converted from PDF using <strong>PyMuPDF</strong> as an alternative to Nougat OCR.</p>
-<p><strong>Processing Notes:</strong> - Basic mathematical expression detection applied - Section headers automatically identified<br>
+<p><strong>Processing Notes:</strong> - Basic mathematical expression detection applied - Section headers automatically identified<br />
 - Manual review recommended for complex equations - Enhanced formatting may be needed for optimal results</p>
 </div>
 </div>
@@ -138,7 +191,7 @@ window.Quarto = {
 <p>1.1 Data Analysis and Optimization 3 the aj into clusters (where the vectors within each cluster are deemed to be functionally similar) or identify a low-dimensional subspace (or a collection of low-dimensional subspaces) that approximately contains the aj. In such problems, we are essentially learning the labels yj alongside the function φ. For example, in a clustering problem, yj could represent the cluster to which aj is assigned. Even after cleaning and preparation, the preceding setup may contain many complications that need to be dealt with in formulating the problem in rigorous mathematical terms. The quantities (aj,yj) may contain noise or may be otherwise corrupted, and we would like the mapping φ to be robust to such errors. There may be missing data: Parts of the vectors aj may be missing, or we may not know all the labels yj. The data may be arriving in streaming fashion rather than being available all at once. In this case, we would learn φ in an online fashion. One consideration that arises frequently is that we wish to avoid overﬁtting the model to the data set D in (1.1). The particular data set D available to us can often be thought of as a ﬁnite sample drawn from some underlying larger (perhaps inﬁnite) collection of possible data points, and we wish the function φ to perform well on the unobserved data points as well as the observed subset D. In other words, we want φ to be not too sensitive to the particular sample D that is used to deﬁne empirical objective functions such as (1.2). One way to avoid this issue is to modify the objective function by adding constraints or penalty terms, in a way that limits the “complexity” of the function φ. This process is typically called regularization. An optimization formulation that balances ﬁt to the training data D, model complexity, and model structure is <span class="math display">\[\min_{\1}\]</span><span class="math inline">\(\in\)</span> LD(x) + λ pen(x), (1.3) where  is a set of allowable values for x, pen(·) is a regularization function or regularizer, and λ ≥0 is a regularization parameter. The regularizer usually takes lower values for parameters x that yield functions φ with lower complex- ity. (For example, φ may depend on fewer of the features in the data vectors aj or may be less oscillatory.) The parameter λ can be “tuned” to provide an appropriate balance between ﬁtting the data and lowering the complexity of φ: Smaller values of λ tend to produce solutions that ﬁt the training data D more accurately, while large values of λ lead to less complex models.1 1 Interestingly, the concept of overﬁtting has been reexamined in recent years, particularly in the context of deep learning, where models that perfectly ﬁt the training data are sometimes observed to also do a good job of classifying previously unseen data. This phenomenon is a topic of intense current research in the machine learning community. https://doi.org/10.1017/9781009004282.002 Published online by Cambridge University Press</p>
 <p>4 1 Introduction The constraint set  in (1.3) may be chosen to exclude values of x that are not relevant or useful in the context of the data analysis problem. For example, in some applications, we may not wish to consider values of x in which one or more components are negative, so we could set  to be the set of vectors whose components are all greater than or equal to zero. We now examine some particular problems in data science that give rise to formulations that are special cases of our master problem (1.3). We will see that a large variety of problems can be formulated using this general framework, but we will also see that within this framework, there is a wide range of structures that must be taken into account in choosing algorithms to solve these problems efﬁciently. 1.2 Least Squares Probably the oldest and best-known data analysis problem is linear least squares. Here, the data points (aj,yj) lie in Rn × R, and we solve <span class="math display">\[\min_{\1}\]</span> 1 2m m  j=1  aT j x −yj 2 = 1 2m∥Ax −y∥2 2, (1.4) where A the matrix whose rows are aT j , j = 1,2, . . . ,m and y = (y1,y2, . . . ,ym)T . In the preceding terminology, the function φ is deﬁned by φ(a) := aT x. (We can introduce a nonzero intercept by adding an extra parameter β <span class="math inline">\(\in\)</span>R and deﬁning φ(a) := aT x + β.) This formulation can be motivated statistically, as a maximum-likelihood estimate of x when the observations yj are exact but for independent identically distributed (i.i.d.) Gaussian noise. We can add a variety of penalty functions to this basic least squares problem to impose desirable structure on x and, hence, on φ. For example, ridge regression adds a squared ℓ2-norm penalty, resulting in <span class="math display">\[\min_{\1}\]</span> 1 2m∥Ax −y∥2 2 + λ∥x∥2 2, for some parameter λ &gt; 0. The solution x of this regularized formulation has less sensitivity to perturba- tions in the data (aj,yj). The LASSO formulation <span class="math display">\[\min_{\1}\]</span> 1 2m∥Ax −y∥2 2 + λ∥x∥1 (1.5) tends to yield solutions x that are sparse – that is, containing relatively few nonzero components (Tibshirani, 1996).</p>
 <section id="sec-this-formulation-performs" class="level2" data-number="1">
-<h2 data-number="1" class="anchored" data-anchor-id="sec-this-formulation-performs"><span class="header-section-number">1</span> This formulation performs</h2>
+<h2 data-number="1"><span class="header-section-number">1</span> This formulation performs</h2>
 <p>feature selection: The locations of the nonzero components in x reveal those https://doi.org/10.1017/9781009004282.002 Published online by Cambridge University Press</p>
 <p>1.3 Matrix Factorization Problems 5 components of aj that are instrumental in determining the observation yj. Besides its statistical appeal – predictors that depend on few features are potentially simpler and more comprehensible than those depending on many features – feature selection has practical appeal in making predictions about future data. Rather than gathering all components of a new data vector ˆa, we need to ﬁnd only the “selected” features because only these are needed to make a prediction. The LASSO formulation (1.5) is an important prototype for many problems in data analysis in that it involves a regularization term λ∥x∥1 that is non- smooth and convex but has relatively simple structure that can potentially be exploited by algorithms. 1.3 Matrix Factorization Problems There are a variety of data analysis problems that require estimating a low-rank matrix from some sparse collection of data. Such problems can be formulated as natural extension of least squares to problems in which the data aj are naturally represented as matrices rather than vectors. Changing notation slightly, we suppose that each Aj is an n×p matrix, and we seek another n × p matrix X that solves min X 1 2m m  j=1 (<span class="math inline">\(\langle \1 \rangle\)</span>−yj)2, (1.6) where <span class="math inline">\(\langle \1 \rangle\)</span>:= trace(AT B). Here we can think of the Aj as “probing” the unknown matrix X. Commonly considered types of observations are random linear combinations (where the elements of Aj are selected i.i.d. from some distribution) or single-element observations (in which each Aj has 1 in a single location and zeros elsewhere). A regularized version of (1.6), leading to solutions X that are low rank, is min X 1 2m m  j=1 (<span class="math inline">\(\langle \1 \rangle\)</span>−yj)2 + λ∥X∥∗, (1.7) where ∥X∥∗is the nuclear norm, which is the sum of singular values of X (Recht et al., 2010). The nuclear norm plays a role analogous to the ℓ1 norm in (1.5), where as the ℓ1 norm favors sparse vectors, the nuclear norm favors low- rank matrices. Although the nuclear norm is a somewhat complex nonsmooth function, it is at least convex so that the formulation (1.7) is also convex. This formulation can be shown to yield a statistically valid solution when the true https://doi.org/10.1017/9781009004282.002 Published online by Cambridge University Press</p>
 <p>6 1 Introduction X is low rank and the observation matrices Aj satisfy a “restricted isometry property,” commonly satisﬁed by random matrices but not by matrices with just one nonzero element. The formulation is also valid in a different context, in which the true X is incoherent (roughly speaking, it does not have a few elements that are much larger than the others), and the observations Aj are of single elements (Cand`es and Recht, 2009). In another form of regularization, the matrix X is represented explicitly as a product of two “thin” matrices L and R, where L <span class="math inline">\(\in\)</span>Rn×r and R <span class="math inline">\(\in\)</span>Rp×r, with r ≪min(n,p). We set X = LRT in (1.6) and solve min L,R 1 2m m  j=1 (<span class="math inline">\(\langle \1 \rangle\)</span>−yj)2. (1.8) In this formulation, the rank r is “hard-wired” into the deﬁnition of X, so there is no need to include a regularizing term. This formulation is also typically much more compact than (1.7); the total number of elements in (L,R) is (n + p)r, which is much less than np. However, this function is nonconvex when considered as a function of (L,R) jointly. An active line of current research, pioneered by Burer and Monteiro (2003) and also drawing on statistical sources, shows that the nonconvexity is benign in many situations and that, under certain assumptions on the data (Aj,yj), j = 1,2, . . . ,m and careful choice of algorithmic strategy, good solutions can be obtained from the formulation (1.8). A clue to this good behavior is that although this formulation is nonconvex, it is in some sense an approximation to a tractable problem: If we have a complete observation of X, then a rank-r approximation can be found by performing a singular value decomposition of X and deﬁning L and R in terms of the r leading left and right singular vectors. Some applications in computer vision, chemometrics, and document clus- tering require us to ﬁnd factors L and R like those in (1.8) in which all elements are nonnegative. If the full matrix Y <span class="math inline">\(\in\)</span>Rn×p is observed, this problem has the form min L,R ∥LRT −Y∥2 F, subject to L ≥0, R ≥0 and is called nonnegative matrix factorization. 1.4 Support Vector Machines Classiﬁcation via support vector machines (SVM) is a classical optimization problem in machine learning, tracing its origins to the 1960s. Given the input https://doi.org/10.1017/9781009004282.002 Published online by Cambridge University Press</p>
@@ -146,27 +199,38 @@ window.Quarto = {
 <p>8 1 Introduction . Figure 1.1 Linear support vector machine classiﬁcation, with the one class represented by circles and the other by squares. One possible choice of separating hyperplane is shown at left. If the training data is an empirical sample drawn from a cloud of underlying data points, this plane does not do well in separating the two clouds (middle). The maximum-margin separating hyperplane does better (right). then perform the support vector machine classiﬁcation on the vectors ψ(aj), j = 1,2, . . . ,m. The conditions (1.9) would thus be replaced by ψ(aj)T x −β ≥1 when yj = +1; (1.12a) ψ(aj)T x −β ≤−1 when yj = −1, (1.12b) leading to the following analog of (1.11): H(x,β) = 1 m m  j=1 max(1 −yj(ψ(aj)T x −β),0) + 1 2λ∥x∥2 2. (1.13) When transformed back to Rm, the surface {a | ψ(a)T x −β = 0} is nonlinear and possibly disconnected, and is often a much more powerful classiﬁer than the hyperplanes resulting from (1.11). We note that SVM can also be expressed naturally as a minimization problem over a convex set. By introducing artiﬁcial variables, the problem (1.13) (and (1.11)) can be formulated as a convex quadratic program – that is, a problem with a convex quadratic objective and linear constraints. By taking the dual of this problem, we obtain another convex quadratic program, in m variables: min α<span class="math inline">\(\in\)</span>Rm 1 2αT Qα −1T α subject to 0 ≤α ≤1 λ1, yT α = 0, (1.14) where</p>
 </section>
 <section id="qkl-ykylψakt-ψal-sec-qkl--ykylψakt-ψal" class="level2" data-number="2">
-<h2 data-number="2" class="anchored" data-anchor-id="qkl-ykylψakt-ψal-sec-qkl--ykylψakt-ψal"><span class="header-section-number">2</span> Qkl = ykylψ(ak)T ψ(al), {#sec-qkl-=-ykylψ(ak)t-ψ(al),}</h2>
+<h2 data-number="2"><span class="header-section-number">2</span> Qkl = ykylψ(ak)T ψ(al), {#sec-qkl-=-ykylψ(ak)t-ψ(al),}</h2>
 <p>y = (y1,y2, . . . ,ym)T, 1 = (1,1, . . . ,1)T . Interestingly, problem (1.14) can be formulated and solved without explicit knowledge or deﬁnition of the mapping ψ. We need only a technique to deﬁne the elements of Q. This can be done with the use of a kernel function K : Rn × Rn →R, where K(ak,al) replaces ψ(ak)T ψ(al) (Boser et al., 1992; Cortes https://doi.org/10.1017/9781009004282.002 Published online by Cambridge University Press</p>
 <p>1.5 Logistic Regression 9 and Vapnik, 1995). This is the so-called kernel trick. (The kernel function K can also be used to construct a classiﬁcation function φ from the solution of (1.14).) A particularly popular choice of kernel is the Gaussian kernel:</p>
 </section>
 <section id="kakal-exp-sec-kakal--exp" class="level2" data-number="3">
-<h2 data-number="3" class="anchored" data-anchor-id="kakal-exp-sec-kakal--exp"><span class="header-section-number">3</span> K(ak,al) := exp {#sec-k(ak,al)-:=-exp}</h2>
+<h2 data-number="3"><span class="header-section-number">3</span> K(ak,al) := exp {#sec-k(ak,al)-:=-exp}</h2>
 <p> −1 2σ ∥ak −al∥2  , where σ is a positive parameter. 1.5 Logistic Regression Logistic regression can be viewed as a softened form of binary support vector machine classiﬁcation in which, rather than the classiﬁcation function φ giving a unqualiﬁed prediction of the class in which a new data vector a lies, it returns an estimate of the odds of a belonging to one class or the other. We seek an “odds function” p parametrized by a vector x <span class="math inline">\(\in\)</span>Rn, p(a;x) := (1 + exp(aT x))−1, (1.15) and aim to choose the parameter x in so that p(aj;x) ≈1 when yj = +1; (1.16a) p(aj;x) ≈0 when yj = −1. (1.16b) (Note the similarity to (1.9).) The optimal value of x can be found by minimizing a negative-log-likelihood function: L(x) := −1 m ⎡ ⎣ j:yj =−1 log(1 −p(aj;x)) +  j:yj =1 log p(aj;x) ⎤ ⎦. (1.17) Note that the deﬁnition (1.15) ensures that p(a;x) <span class="math inline">\(\in\)</span>(0,1) for all a and x; thus, log(1 −p(aj;x)) &lt; 0 and log p(aj;x) &lt; 0 for all j and all x. When the conditions (1.16) are satisﬁed, these log terms will be only slightly negative, so values of x that satisfy (1.17) will be near optimal. We can perform feature selection using the model (1.17) by introducing a regularizer λ∥x∥1 (as in the LASSO technique for least squares (1.5)), <span class="math display">\[\min_{\1}\]</span> −1 m ⎡ ⎣ j:yj =−1 log(1 −p(aj;x)) +  j:yj =1 log p(aj;x) ⎤ ⎦+ λ∥x∥1, (1.18) where λ &gt; 0 is a regularization parameter. As we see later, this term has the effect of producing a solution in which few components of x are nonzero, https://doi.org/10.1017/9781009004282.002 Published online by Cambridge University Press</p>
 <p>10 1 Introduction making it possible to evaluate p(a;x) by knowing only those components of a that correspond to the nonzeros in x. An important extension of this technique is to multiclass (or multinomial) logistic regression, in which the data vectors aj belong to more than two classes. Such applications are common in modern data analysis. For example, in a speech recognition system, the M classes could each represent a phoneme of speech, one of the potentially thousands of distinct elementary sounds that can be uttered by humans in a few tens of milliseconds. A multinomial logistic regression problem requires a distinct odds function pk for each class k <span class="math inline">\(\in\)</span>{1,2, . . . ,M}. These functions are parametrized by vectors x[k] <span class="math inline">\(\in\)</span>Rn, k = 1,2, . . . ,M, deﬁned as follows: pk(a;X) := exp(aT x[k]) M l=1 exp(aT x[l]) , k = 1,2, . . . ,M, (1.19) where we deﬁne X := {x[k] | k = 1,2, . . . ,M}. As in the binary case, we have pk(a) <span class="math inline">\(\in\)</span>(0,1) for all a and all k = 1,2, . . . ,M and, in addition, that M k=1 pk(a) = 1. The functions (1.19) perform a “softmax” on the quantities {aT x[l] | l = 1,2, . . . ,M}. In the setting of multiclass logistic regression, the labels yj are vectors in</p>
 </section>
 <section id="sec-rm-whose-elements-are-deﬁned-as-follows:" class="level2" data-number="4">
-<h2 data-number="4" class="anchored" data-anchor-id="sec-rm-whose-elements-are-deﬁned-as-follows:"><span class="header-section-number">4</span> RM whose elements are deﬁned as follows:</h2>
+<h2 data-number="4"><span class="header-section-number">4</span> RM whose elements are deﬁned as follows:</h2>
 <p>yjk =</p>
 <p>1 when aj belongs to class k, 0 otherwise. (1.20) Similarly to (1.16), we seek to deﬁne the vectors x[k] so that pk(aj;X) ≈1 when yjk = 1 (1.21a) pk(aj;X) ≈0 when yjk = 0. (1.21b) The problem of ﬁnding values of x[k] that satisfy these conditions can again be formulated as one of minimizing a negative-log-likelihood: L(X) := −1 m m  j=1 M  ℓ=1 yjℓ(xT [ℓ]aj) −log  M  ℓ=1 exp(xT [ℓ]aj)  . (1.22) “Group-sparse” regularization terms can be included in this formulation to select a set of features in the vectors aj, common to each class, that distinguish effectively between the classes. https://doi.org/10.1017/9781009004282.002 Published online by Cambridge University Press</p>
 <p>1.6 Deep Learning 11 1.6 Deep Learning Deep neural networks are often designed to perform the same function as multiclass logistic regression – that is, to classify a data vector a into one of M possible classes, often for large M. The major innovation is that the mapping φ from data vector to prediction is now a nonlinear function, explicitly parametrized by a set of structured transformations. The neural network shown in Figure 1.2 illustrates the structure of a particu- lar neural net. In this ﬁgure, the data vector aj enters at the left of the network, and each box (more often referred to as a “layer”) represents a transformation that takes an input vector and applies a nonlinear transformation of the data to produce an output vector. The output of each operator becomes the input for one or more subsequent layers. Each layer has a set of its own parameters, and the collection of all of the parameters over all the layers comprises our optimization variable. The different shades of boxes here denote the fact that the types of transformations might differ between layers, but we can compose them in whatever fashion suits our application. A typical transformation, which converts the vector al−1 j representing output from layer l −1 to the vector al j representing output from layer l, is al j = σ(W lal−1 j + gl), (1.23) where W l is a matrix of dimension |al j|×|al−1 j | and gl is a vector of length |al j|. The function σ is a componentwise nonlinear transformation, usually called an activation function. The most common forms of the activation function σ act independently on each component of their argument vector as follows: - Sigmoid: t →1/(1 + e−t); - Rectiﬁed Linear Unit (ReLU): t →max(t,0). Alternative transformations are needed when the input to box l comes from two or more preceding boxes (as in the case for some boxes in Figure 1.2). The rightmost layer of the neural network (the output layer) typically has M outputs, one for each of the possible classes to which the input (aj, say) could belong. These are compared to the labels yjk, deﬁned as in (1.20) to indicate which of the M classes that aj belongs to. Often, a softmax is applied to the Figure 1.2 A deep neural network, showing connections between adjacent layers, where each layer is represented by a shaded rectangle. https://doi.org/10.1017/9781009004282.002 Published online by Cambridge University Press</p>
 <p>12 1 Introduction outputs in the rightmost layer, and a loss function similar to (1.22) is obtained, as we describe now. Consider the special (but not uncommon) case in which the neural net structure is a linear graph of D levels, in which the output for layer l −1 becomes the input for layer l (for l = 1,2, . . . ,D) with aj = a0 j, j = 1,2, . . . ,m, and the transformation within each box has the form (1.23). A softmax is applied to the output of the rightmost layer to obtain a set of odds. The parameters in this neural network are the matrix-vector pairs (W l,gl), l = 1,2, . . . ,D that transform the input vector aj = a0 j into the output aD j of the ﬁnal layer. We aim to choose all these parameters so that the network does a good job of classifying the training data correctly. Using the notation w for the layer-to-layer transformations, that is, w := (W 1,g1,W 2,g2, . . . ,W D,gD), we can write the loss function for deep learning as L(w) = −1 m m  j=1 M  ℓ=1 yjℓaD j,ℓ(w) −log  M  ℓ=1 exp aD j,ℓ(w)  , (1.24) where aD j,ℓ(w) <span class="math inline">\(\in\)</span>R is the output of the ℓth element in layer D corresponding to input vector a0 j. (Here we write aD j,ℓ(w) to make explicit the dependence on the transformations w as well as on the input vector aj.) We can view multiclass logistic regression as a special case of deep learning with D = 1, so that a1 j,ℓ= W 1 ℓ,·a0 j, where W 1 ℓ,· denotes row ℓof the matrix W 1. Neural networks in use for particular applications (for example, in image recognition and speech recognition, where they have been quite successful) include many variants on the basic design. These include restricted connectiv- ity between the boxes (which corresponds to enforcing sparsity structure on the matrices W l, l = 1,2, . . . ,D) and sharing parameters, which corresponds to forcing subsets of the elements of W l to take the same value. Arrangements of the boxes may be quite complex, with outputs coming from several layers, con- nections across nonadjacent layers, different componentwise transformations σ at different layers, and so on. Deep neural networks for practical applications are highly engineered objects. The loss function (1.24) shares with many other applications the ﬁnite-sum form (1.2), but it has several features that set it apart from the other applications discussed before. First, and possibly most important, it is nonconvex in the parameters w. Second, the total number of parameters in w is usually very large. Effective training of deep learning classiﬁers typically requires a great deal of data and computation power. Huge clusters of powerful computers – https://doi.org/10.1017/9781009004282.002 Published online by Cambridge University Press</p>
 <p>1.7 Emphasis 13 often using multicore processors, GPUs, and even specially architected pro- cessing units – are devoted to this task. 1.7 Emphasis Many problems can be formulated as in the framework (1.3), and their properties may differ signiﬁcantly. They might be convex or nonconvex, and smooth or nonsmooth. But there are important features that they all share. • They can be formulated as functions of real variables, which we typically arrange in a vector of length n. • The functions are continuous. When nonsmoothness appears in the formulation, it does so in a structured way that can be exploited by the algorithm. Smoothness properties allow an algorithm to make good inferences about the behavior of the function on the basis of knowledge gained at nearby points that have been visited previously. • The objective is often made up in part of a summation of many terms, where each term depends on a single item of data. • The objective is often a sum of two terms: a “loss term” (sometimes arising from a maximum likelihood expression for some statistical model) and a “regularization term” whose purpose is to impose structure and “generalizability” on the recovered model. Our treatment emphasizes algorithms for solving these various kinds of problems, with analysis of the convergence properties of these algorithms. We pay attention to complexity guarantees, which are bounds on the amount of computational effort required to obtain solutions of a given accuracy. These bounds usually depend on fundamental properties of the objective function and the data that deﬁnes it, including the dimensions of the data set and the number of variables in the problem. This emphasis contrasts with much of the optimization literature, in which global convergence results do not usually involve complexity bounds. (A notable exception is the analysis of interior- point methods (see Nesterov and Nemirovskii, 1994; Wright, 1997)). At the same time, we try as much as possible to emphasize the practical concerns associated with solving these problems. There are a variety of trade- offs presented by any problem, and the optimizer has to evaluate which tools are most appropriate to use. On top of the problem formulation, it is imperative to account for the time budget for the task at hand, the type of computer on which the problem will be solved, and the guarantees needed for the https://doi.org/10.1017/9781009004282.002 Published online by Cambridge University Press</p>
+<div id="quarto-navigation-envelope" class="hidden">
+<p><span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyLXRpdGxl">Data Analysis Collection</span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1uYXZiYXItdGl0bGU=">Data Analysis Collection</span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1uYXZiYXI6RW5nbGlzaA==">English</span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1uYXZiYXI6L2VuL2luZGV4Lmh0bWw=">/en/index.html</span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1uYXZiYXI6RXNwYcOxb2w=">Español</span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1uYXZiYXI6L2VzL2luZGV4Lmh0bWw=">/es/index.html</span></p>
+<div class="hidden quarto-markdown-envelope-contents" data-render-id="Zm9vdGVyLWxlZnQ=">
+<p>© 2025 Norah Jones</p>
+</div>
+<div class="hidden quarto-markdown-envelope-contents" data-render-id="Zm9vdGVyLXJpZ2h0LUF2YWlsYWJsZSBpbiBFbmdsaXNoIGFuZCBTcGFuaXNo">
+<p>Available in English and Spanish</p>
+</div>
+</div>
+<div id="quarto-meta-markdown" class="hidden">
+<p><span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLW1ldGF0aXRsZQ==">Introduction to Optimization - PyMuPDF Version – Data Analysis Collection</span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLXR3aXR0ZXJjYXJkdGl0bGU=">Introduction to Optimization - PyMuPDF Version – Data Analysis Collection</span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLW9nY2FyZHRpdGxl">Introduction to Optimization - PyMuPDF Version – Data Analysis Collection</span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLW1ldGFzaXRlbmFtZQ==">Data Analysis Collection</span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLXR3aXR0ZXJjYXJkZGVzYw==">PyMuPDF Enhanced Conversion</span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLW9nY2FyZGRkZXNj">PyMuPDF Enhanced Conversion</span></p>
+</div>
 </section>
 
-</main>
-<!-- /main column -->
-<script id="quarto-html-after-body" type="application/javascript">
+</main> <!-- /main -->
+<script id = "quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";
     const anchorJS = new window.AnchorJS();
@@ -567,8 +631,29 @@ window.Quarto = {
   });
   </script>
 </div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      <div class='footer-contents'>© 2025 Norah Jones</div>  
+    </div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    </div>
+    <div class="nav-footer-right">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item">
+      <i 
+  class="bi bi-translate" 
+  role="img" 
+>
+</i> 
+ Available in English and Spanish
+  </li>  
+</ul>
+    </div>
+  </div>
+</footer>
 
+</body>
 
-
-
-</body></html>
+</html>

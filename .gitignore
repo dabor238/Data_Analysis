@@ -18,3 +18,10 @@ automation/logs/*.json
 
 # Backup files
 *.backup
+
+# Old chapter versions (not for publishing)
+chapters/optimization/*_backup.qmd
+chapters/optimization/*_enhanced.qmd
+chapters/optimization/*_improved.qmd
+chapters/optimization/*_pymupdf.qmd
+chapters/optimization/.qmd
